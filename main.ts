@@ -53,6 +53,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     statusbar.value += -34
     otherSprite.destroy()
 })
+let projectile_ennemi: Sprite = null
 let statusbar2: StatusBarSprite = null
 let ennemi_b: Sprite = null
 let ennemi_a: Sprite = null
@@ -129,8 +130,22 @@ game.onUpdateInterval(5000, function () {
         `, 0, 5)
     ennemi_b.x = randint(5, 155)
     ennemi_b.setKind(SpriteKind.ennemi_vivant)
-    statusbar2 = statusbars.create(8, 2, StatusBarKind.EnemyHealth)
+    statusbar2 = statusbars.create(8, 1, StatusBarKind.EnemyHealth)
     statusbar2.attachToSprite(ennemi_b, -2, 0)
+})
+game.onUpdateInterval(500, function () {
+    for (let valeur of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
+        if (Math.percentChance(50)) {
+            projectile_ennemi = sprites.createProjectileFromSprite(img`
+                . . . 
+                . 2 . 
+                . 2 . 
+                . 2 . 
+                . 2 . 
+                . . . 
+                `, valeur, 0, 70)
+        }
+    }
 })
 game.onUpdateInterval(10000, function () {
     statusbar.value += 10
