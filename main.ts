@@ -41,7 +41,7 @@ vaisseau = sprites.create(img`
     `, SpriteKind.Player)
 controller.moveSprite(vaisseau)
 vaisseau.setStayInScreen(true)
-statusbar = statusbars.create(15, 4, StatusBarKind.Energy)
+statusbar = statusbars.create(15, 3, StatusBarKind.Energy)
 statusbar.attachToSprite(vaisseau, -20, 0)
 game.onUpdateInterval(5000, function () {
     ennemi_a = sprites.createProjectileFromSide(img`
