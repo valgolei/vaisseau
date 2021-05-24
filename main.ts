@@ -12,8 +12,12 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         `, vaisseau, 0, -100)
     tir_joueur.setKind(SpriteKind.tir_ami)
 })
+statusbars.onZero(StatusBarKind.EnemyHealth, function (status) {
+    status.spriteAttachedTo().destroy(effects.confetti, 100)
+})
 sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.Enemy, function (sprite, otherSprite) {
-    statusbar2.value += -34
+    sprite.destroy()
+    statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -34
 })
 statusbars.onZero(StatusBarKind.Energy, function (status) {
     pause(100)
@@ -24,8 +28,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     otherSprite.destroy()
 })
 let ennemi_a: Sprite = null
-let ennemi_b: Sprite = null
 let statusbar2: StatusBarSprite = null
+let ennemi_b: Sprite = null
 let tir_joueur: Sprite = null
 let statusbar: StatusBarSprite = null
 let vaisseau: Sprite = null
@@ -70,11 +74,11 @@ game.onUpdateInterval(5000, function () {
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
-        `, 0, 3)
+        `, 0, 5)
     ennemi_b.x = randint(5, 155)
     ennemi_b.setKind(SpriteKind.Enemy)
     statusbar2 = statusbars.create(10, 2, StatusBarKind.EnemyHealth)
-    statusbar2.attachToSprite(ennemi_b, 0, 0)
+    statusbar2.attachToSprite(ennemi_b, -2, 0)
 })
 game.onUpdateInterval(5000, function () {
     ennemi_a = sprites.createProjectileFromSide(img`
