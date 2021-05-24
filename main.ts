@@ -1,6 +1,16 @@
 namespace SpriteKind {
     export const tir_ami = SpriteKind.create()
+    export const ennemi_vivant = SpriteKind.create()
+    export const projectil_de_la_mort = SpriteKind.create()
 }
+sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.ennemi_vivant, function (sprite, otherSprite) {
+    sprite.destroy()
+    statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -34
+})
+sprites.onOverlap(SpriteKind.projectil_de_la_mort, SpriteKind.ennemi_vivant, function (sprite, otherSprite) {
+    sprite.destroy()
+    statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -200
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     tir_joueur = sprites.createProjectileFromSprite(img`
         . . . 
@@ -14,10 +24,26 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 statusbars.onZero(StatusBarKind.EnemyHealth, function (status) {
     status.spriteAttachedTo().destroy(effects.confetti, 100)
+    magie.value += 17
 })
-sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.Enemy, function (sprite, otherSprite) {
-    sprite.destroy()
-    statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -34
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (magie.value == 100) {
+        projectile_de_la_mort_ami = sprites.createProjectileFromSprite(img`
+            . . 4 4 . . 
+            . 4 2 2 4 . 
+            4 2 5 5 2 4 
+            4 2 5 5 2 4 
+            . 4 2 2 4 . 
+            . . 4 4 . . 
+            `, vaisseau, 0, -200)
+        projectile_de_la_mort_ami.startEffect(effects.fire)
+        projectile_de_la_mort_ami.setKind(SpriteKind.projectil_de_la_mort)
+        magie.value += -100
+    }
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.ennemi_vivant, function (sprite, otherSprite) {
+    statusbar.value += -34
+    otherSprite.destroy()
 })
 statusbars.onZero(StatusBarKind.Energy, function (status) {
     pause(100)
@@ -27,10 +53,12 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     statusbar.value += -34
     otherSprite.destroy()
 })
-let ennemi_a: Sprite = null
 let statusbar2: StatusBarSprite = null
 let ennemi_b: Sprite = null
+let ennemi_a: Sprite = null
+let projectile_de_la_mort_ami: Sprite = null
 let tir_joueur: Sprite = null
+let magie: StatusBarSprite = null
 let statusbar: StatusBarSprite = null
 let vaisseau: Sprite = null
 effects.starField.startScreenEffect()
@@ -56,30 +84,8 @@ controller.moveSprite(vaisseau)
 vaisseau.setStayInScreen(true)
 statusbar = statusbars.create(12, 3, StatusBarKind.Energy)
 statusbar.attachToSprite(vaisseau, -18, 0)
-game.onUpdateInterval(5000, function () {
-    ennemi_b = sprites.createProjectileFromSide(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . 1 . . . . 1 . . . . . 
-        . . . . . d d d d d d . . . . . 
-        . . . . . d . 9 9 . d . . . . . 
-        . . . . . d . . . . d . . . . . 
-        . . . . . 2 . . . . 2 . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `, 0, 5)
-    ennemi_b.x = randint(5, 155)
-    ennemi_b.setKind(SpriteKind.Enemy)
-    statusbar2 = statusbars.create(10, 2, StatusBarKind.EnemyHealth)
-    statusbar2.attachToSprite(ennemi_b, -2, 0)
-})
+magie = statusbars.create(25, 4, StatusBarKind.Magic)
+magie.setPosition(16, 6)
 game.onUpdateInterval(5000, function () {
     ennemi_a = sprites.createProjectileFromSide(img`
         . . . . . . . . . . . . . . . . 
@@ -102,6 +108,31 @@ game.onUpdateInterval(5000, function () {
     ennemi_a.x = randint(5, 155)
     ennemi_a.setKind(SpriteKind.Enemy)
 })
-game.onUpdateInterval(1000, function () {
-    statusbar.value += 1
+game.onUpdateInterval(5000, function () {
+    ennemi_b = sprites.createProjectileFromSide(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . 1 . . . . 1 . . . . . 
+        . . . . . d d d d d d . . . . . 
+        . . . . . d . 9 9 . d . . . . . 
+        . . . . . d . . . . d . . . . . 
+        . . . . . 2 . . . . 2 . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, 0, 5)
+    ennemi_b.x = randint(5, 155)
+    ennemi_b.setKind(SpriteKind.Enemy)
+    ennemi_b.setKind(SpriteKind.ennemi_vivant)
+    statusbar2 = statusbars.create(8, 1.5, StatusBarKind.EnemyHealth)
+    statusbar2.attachToSprite(ennemi_b, -2, 0)
+})
+game.onUpdateInterval(10000, function () {
+    statusbar.value += 10
 })
