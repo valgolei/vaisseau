@@ -128,9 +128,8 @@ game.onUpdateInterval(5000, function () {
         . . . . . . . . . . . . . . . . 
         `, 0, 5)
     ennemi_b.x = randint(5, 155)
-    ennemi_b.setKind(SpriteKind.Enemy)
     ennemi_b.setKind(SpriteKind.ennemi_vivant)
-    statusbar2 = statusbars.create(8, 1.5, StatusBarKind.EnemyHealth)
+    statusbar2 = statusbars.create(8, 2, StatusBarKind.EnemyHealth)
     statusbar2.attachToSprite(ennemi_b, -2, 0)
 })
 game.onUpdateInterval(10000, function () {
