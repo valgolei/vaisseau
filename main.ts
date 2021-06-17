@@ -28,13 +28,13 @@ sprites.onDestroyed(SpriteKind.BOSS, function (sprite) {
 })
 sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.ennemi_vivant, function (sprite, otherSprite) {
     sprite.destroy()
-    statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -50
+    statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -34
 })
 statusbars.onZero(StatusBarKind.BOSSHEALT, function (status) {
-    BOSS.startEffect(effects.spray)
-    BOSS.startEffect(effects.fire)
-    BOSS.startEffect(effects.halo)
-    BOSS.destroy(effects.disintegrate, 2000)
+    BOSS2.startEffect(effects.spray)
+    BOSS2.startEffect(effects.fire)
+    BOSS2.startEffect(effects.halo)
+    BOSS2.destroy(effects.spray, 2000)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.tir_ennemi, function (sprite, otherSprite) {
     otherSprite.destroy()
@@ -50,7 +50,7 @@ sprites.onOverlap(SpriteKind.projectil_de_la_mort, SpriteKind.ennemi_vivant, fun
 })
 sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.big_boss, function (sprite, otherSprite) {
     sprite.destroy()
-    statusbars.getStatusBarAttachedTo(StatusBarKind.big_bosshealt, otherSprite).value += -18
+    statusbars.getStatusBarAttachedTo(StatusBarKind.big_bosshealt, otherSprite).value += -12
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (energie.value != 0) {
@@ -107,10 +107,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     otherSprite.destroy()
 })
 let pomme: Sprite = null
+let TIRBOSS: Sprite = null
 let t_d_vie_: StatusBarSprite = null
 let ennemi_d: Sprite = null
 let tir_de_direction: Sprite = null
-let TIRBOSS: Sprite = null
+let vitesse = 0
 let tir_big_boss2: Sprite = null
 let projectile_ennemi: Sprite = null
 let ennemi_c: Sprite = null
@@ -119,7 +120,7 @@ let ennemi_b: Sprite = null
 let ennemi_a: Sprite = null
 let projectile_de_la_mort_ami: Sprite = null
 let tir_joueur: Sprite = null
-let BOSS: Sprite = null
+let BOSS2: Sprite = null
 let statusbar: StatusBarSprite = null
 let energie: StatusBarSprite = null
 let magie: StatusBarSprite = null
@@ -156,44 +157,44 @@ info.setScore(0)
 game.onUpdate(function () {
     if (info.score() == 60) {
         info.changeScoreBy(40)
-        for (let ennemi_a of sprites.allOfKind(SpriteKind.Enemy)) {
-            ennemi_a.destroy()
+        for (let ennemi_a2 of sprites.allOfKind(SpriteKind.Enemy)) {
+            ennemi_a2.destroy()
         }
-        for (let ennemi_b of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
-            ennemi_b.destroy()
+        for (let ennemi_b2 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
+            ennemi_b2.destroy()
         }
-        for (let ennemi_c of sprites.allOfKind(SpriteKind.big_boss)) {
-            ennemi_c.destroy()
+        for (let ennemi_c2 of sprites.allOfKind(SpriteKind.big_boss)) {
+            ennemi_c2.destroy()
         }
-        for (let ennemi_d of sprites.allOfKind(SpriteKind.tirreur_de_direction)) {
-            ennemi_d.destroy()
+        for (let ennemi_d2 of sprites.allOfKind(SpriteKind.tirreur_de_direction)) {
+            ennemi_d2.destroy()
         }
-        BOSS = sprites.create(assets.image`BOSS`, SpriteKind.tir_ami)
-        BOSS.setPosition(80, 45)
+        BOSS2 = sprites.create(assets.image`BOSS`, SpriteKind.tir_ami)
+        BOSS2.setPosition(80, 45)
         pause(100)
-        BOSS.setKind(SpriteKind.BOSS)
+        BOSS2.setKind(SpriteKind.BOSS)
         statusbar = statusbars.create(100, 5, StatusBarKind.BOSSHEALT)
         statusbar.setPosition(80, 5)
         statusbar.setColor(2, 11)
     }
 })
 game.onUpdate(function () {
-    for (let ennemi_b2 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
-        if (ennemi_b2.y > 125) {
-            ennemi_b2.destroy()
+    for (let ennemi_b22 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
+        if (ennemi_b22.y > 125) {
+            ennemi_b22.destroy()
             vie.value += -30
         }
     }
 })
 game.onUpdate(function () {
-    for (let ennemi_c2 of sprites.allOfKind(SpriteKind.big_boss)) {
-        if (ennemi_c2.y > 125) {
-            ennemi_c2.destroy()
+    for (let ennemi_c22 of sprites.allOfKind(SpriteKind.big_boss)) {
+        if (ennemi_c22.y > 125) {
+            ennemi_c22.destroy()
             vie.value += -60
         }
     }
 })
-game.onUpdateInterval(7000, function () {
+game.onUpdateInterval(5000, function () {
     if (info.score() < 60) {
         ennemi_a = sprites.createProjectileFromSide(img`
             . . . . . . . . . . . . . . . . 
@@ -233,7 +234,7 @@ game.onUpdateInterval(7000, function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, 0, 5)
-        ennemi_b.x = randint(5, 155)
+        ennemi_b.x = randint(6, 154)
         ennemi_b.setKind(SpriteKind.ennemi_vivant)
         vie_ennemi = statusbars.create(8, 1, StatusBarKind.EnemyHealth)
         vie_ennemi.attachToSprite(ennemi_b, -2, 0)
@@ -247,7 +248,7 @@ game.onUpdateInterval(2000, function () {
         vie.value += 2
     }
     if (energie.value == 100) {
-        vie.value += 4
+        vie.value += 3
     }
 })
 game.onUpdateInterval(24000, function () {
@@ -312,23 +313,10 @@ game.onUpdateInterval(1000, function () {
         }
     }
 })
-game.onUpdateInterval(300, function () {
-    for (let BOSS of sprites.allOfKind(SpriteKind.BOSS)) {
-        TIRBOSS = sprites.createProjectileFromSprite(img`
-            . 2 . 
-            2 2 2 
-            . 2 . 
-            2 2 2 
-            . 2 . 
-            . . . 
-            `, BOSS, 0, 100)
-        TIRBOSS.setKind(SpriteKind.tir_ennemi)
-        TIRBOSS.setPosition(randint(0, 160), randint(0, 60))
-    }
-})
 game.onUpdateInterval(3000, function () {
-    for (let ennemi_d2 of sprites.allOfKind(SpriteKind.tirreur_de_direction)) {
+    for (let ennemi_d22 of sprites.allOfKind(SpriteKind.tirreur_de_direction)) {
         if (Math.percentChance(60)) {
+            vitesse = 55 / Math.sqrt((ennemi_d22.x - vaisseau.x)^2 + (ennemi_d22.y - vaisseau.y)^2)
             tir_de_direction = sprites.createProjectileFromSprite(img`
                 . . . 
                 . 2 . 
@@ -336,7 +324,7 @@ game.onUpdateInterval(3000, function () {
                 . 2 . 
                 . 2 . 
                 . . . 
-                `, ennemi_d2, (ennemi_d2.x - vaisseau.x) * 55 / (ennemi_d2.y - vaisseau.y), 55)
+                `, ennemi_d22, (ennemi_d22.x - vaisseau.x) * vitesse, (ennemi_d22.y - vaisseau.y) * vitesse)
             tir_de_direction.setKind(SpriteKind.tir_ennemi)
         }
     }
@@ -348,6 +336,20 @@ game.onUpdateInterval(20000, function () {
         ennemi_d.setKind(SpriteKind.tirreur_de_direction)
         t_d_vie_ = statusbars.create(10, 1, StatusBarKind.t_d_vie)
         t_d_vie_.attachToSprite(ennemi_d, -2, 0)
+    }
+})
+game.onUpdateInterval(200, function () {
+    for (let BOSS3 of sprites.allOfKind(SpriteKind.BOSS)) {
+        TIRBOSS = sprites.createProjectileFromSprite(img`
+            . 2 . 
+            2 2 2 
+            . 2 . 
+            2 2 2 
+            . 2 . 
+            . . . 
+            `, BOSS3, 0, 100)
+        TIRBOSS.setKind(SpriteKind.tir_ennemi)
+        TIRBOSS.setPosition(randint(0, 160), randint(0, 60))
     }
 })
 game.onUpdateInterval(10000, function () {
