@@ -165,7 +165,7 @@ game.onUpdate(function () {
     }
 })
 game.onUpdate(function () {
-    if (info.score() < 59 && info.score() > 64) {
+    if (info.score() > 59 && info.score() < 62) {
         info.setScore(100)
         for (let ennemi_a2 of sprites.allOfKind(SpriteKind.Enemy)) {
             ennemi_a2.destroy()
