@@ -15,6 +15,7 @@ namespace StatusBarKind {
     export const BOSSHEALT = StatusBarKind.create()
 }
 sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.BOSS, function (sprite, otherSprite) {
+    music.smallCrash.play()
     sprite.destroy()
     statusbar.value += -1
 })
@@ -27,8 +28,12 @@ sprites.onDestroyed(SpriteKind.BOSS, function (sprite) {
     game.over(true)
 })
 sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.ennemi_vivant, function (sprite, otherSprite) {
+    music.smallCrash.play()
     sprite.destroy()
     statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -50
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.BOSS, function (sprite, otherSprite) {
+    vie.value += -1
 })
 statusbars.onZero(StatusBarKind.BOSSHEALT, function (status) {
     BOSS2.startEffect(effects.spray)
@@ -45,15 +50,18 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.fruit, function (sprite, otherSp
     energie.value += 40
 })
 sprites.onOverlap(SpriteKind.projectil_de_la_mort, SpriteKind.ennemi_vivant, function (sprite, otherSprite) {
+    music.bigCrash.play()
     sprite.destroy()
     statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -200
 })
 sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.big_boss, function (sprite, otherSprite) {
+    music.smallCrash.play()
     sprite.destroy()
     statusbars.getStatusBarAttachedTo(StatusBarKind.big_bosshealt, otherSprite).value += -18
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (energie.value != 0) {
+        music.knock.play()
         tir_joueur = sprites.createProjectileFromSprite(img`
             . . . 
             . 2 . 
@@ -71,7 +79,13 @@ statusbars.onZero(StatusBarKind.EnemyHealth, function (status) {
     magie.value += 17
     info.changeScoreBy(1)
 })
+sprites.onOverlap(SpriteKind.projectil_de_la_mort, SpriteKind.BOSS, function (sprite, otherSprite) {
+    music.bigCrash.play()
+    sprite.destroy()
+    statusbar.value += -6
+})
 sprites.onOverlap(SpriteKind.projectil_de_la_mort, SpriteKind.big_boss, function (sprite, otherSprite) {
+    music.bigCrash.play()
     sprite.destroy()
     statusbars.getStatusBarAttachedTo(StatusBarKind.big_bosshealt, otherSprite).value += -72
 })
@@ -81,6 +95,7 @@ statusbars.onZero(StatusBarKind.Health, function (status) {
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (magie.value == 100) {
+        music.thump.play()
         projectile_de_la_mort_ami = sprites.createProjectileFromSprite(img`
             . . 4 4 . . 
             . 4 2 2 4 . 
@@ -107,8 +122,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     otherSprite.destroy()
 })
 let pomme: Sprite = null
-let t_d_vie_: StatusBarSprite = null
 let ennemi_d: Sprite = null
+let t_d_BOSS: Sprite = null
 let tir_de_direction: Sprite = null
 let vitesse = 0
 let dy = 0
@@ -344,13 +359,28 @@ game.onUpdateInterval(3000, function () {
         }
     }
 })
+game.onUpdateInterval(3000, function () {
+    for (let BOSS2 of sprites.allOfKind(SpriteKind.BOSS)) {
+        if (Math.percentChance(60)) {
+            dx = BOSS2.x - vaisseau.x
+            dy = BOSS2.y - vaisseau.y
+            vitesse = 55 / Math.sqrt(dx * dx + dy * dy)
+            t_d_BOSS = sprites.createProjectileFromSprite(img`
+                . . d . . 
+                . d d d . 
+                d d d d d 
+                . d d d . 
+                . . d . . 
+                `, BOSS2, (vaisseau.x - BOSS2.x) * vitesse, (vaisseau.y - BOSS2.y) * vitesse)
+            t_d_BOSS.setKind(SpriteKind.Enemy)
+        }
+    }
+})
 game.onUpdateInterval(20000, function () {
     if (info.score() > 40 && info.score() < 60) {
         ennemi_d = sprites.createProjectileFromSide(assets.image`a`, 0, 5)
         ennemi_d.x = randint(5, 155)
         ennemi_d.setKind(SpriteKind.tirreur_de_direction)
-        t_d_vie_ = statusbars.create(10, 1, StatusBarKind.t_d_vie)
-        t_d_vie_.attachToSprite(ennemi_d, -2, 0)
     }
 })
 game.onUpdateInterval(10000, function () {
