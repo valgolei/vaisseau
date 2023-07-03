@@ -180,7 +180,7 @@ game.onUpdate(function () {
     }
 })
 game.onUpdate(function () {
-    if (info.score() > 59 && info.score() < 62) {
+    if (info.score() > 59 && info.score() < 63) {
         info.setScore(100)
         for (let ennemi_a2 of sprites.allOfKind(SpriteKind.Enemy)) {
             ennemi_a2.destroy()
@@ -241,7 +241,7 @@ game.onUpdateInterval(7000, function () {
             . . . . . . . . . . . . . . . . 
             . . . . . 1 . . . . 1 . . . . . 
             . . . . . d d d d d d . . . . . 
-            . . . . . d . 9 9 . d . . . . . 
+            . . . . . d . 9 9 . d f . . . . 
             . . . . . d . . . . d . . . . . 
             . . . . . 2 . . . . 2 . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -280,7 +280,7 @@ game.onUpdateInterval(24000, function () {
             . . . . . 8 8 8 8 8 . . . . . . 
             . . . . 8 8 8 8 8 8 8 . . . . . 
             . . . . 8 8 8 8 8 8 8 . . . . . 
-            . . . . 8 8 8 8 8 8 8 . . . . . 
+            . . . . 8 8 8 8 8 8 8 f . . . . 
             . . . . 9 8 8 8 8 8 9 . . . . . 
             . . . . 9 . 8 8 8 . 9 . . . . . 
             . . . . 2 . . 2 . . 2 . . . . . 

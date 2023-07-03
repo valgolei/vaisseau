@@ -147,5 +147,12 @@ namespace myImages {
         return null;
     })
 
+    helpers._registerFactory("song", function(name: string) {
+        switch(helpers.stringTrim(name)) {
+
+        }
+        return null;
+    })
+
 }
 // Code généré automatiquement. Ne pas modifier.
