@@ -283,7 +283,7 @@ game.onUpdateInterval(2000, function () {
     }
 })
 game.onUpdateInterval(24000, function () {
-    if (info.score() > 14 && info.score() < 60) {
+    if (info.score() > 9 && info.score() < 60) {
         ennemi_c = sprites.createProjectileFromSide(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
