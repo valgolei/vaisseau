@@ -44,6 +44,7 @@ statusbars.onZero(StatusBarKind.BOSSHEALT, function (status) {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.tir_ennemi, function (sprite, otherSprite) {
     otherSprite.destroy()
     vie.value += -15
+    music.smallCrash.play()
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.fruit, function (sprite, otherSprite) {
     otherSprite.destroy()
@@ -92,6 +93,11 @@ sprites.onOverlap(SpriteKind.projectil_de_la_mort, SpriteKind.big_boss, function
 })
 statusbars.onZero(StatusBarKind.Health, function (status) {
     energie.value = 0
+    vie.value = 0
+    magie.value = 0
+    sprites.destroy(vie)
+    sprites.destroy(energie)
+    sprites.destroy(magie)
     vaisseau.startEffect(effects.fire)
     music.beamUp.play()
     sprites.destroy(vaisseau)
@@ -117,14 +123,17 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.ennemi_vivant, function (sprite, otherSprite) {
     vie.value += -34
     otherSprite.destroy()
+    music.bigCrash.play()
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.big_boss, function (sprite, otherSprite) {
     otherSprite.destroy()
     vie.value += -66
+    music.bigCrash.play()
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     vie.value += -34
     otherSprite.destroy()
+    music.bigCrash.play()
 })
 let pomme: Sprite = null
 let ennemi_d: Sprite = null
