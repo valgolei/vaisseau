@@ -47,6 +47,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.tir_ennemi, function (sprite, ot
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.fruit, function (sprite, otherSprite) {
     otherSprite.destroy()
+    music.baDing.play()
     energie.value += 40
 })
 sprites.onOverlap(SpriteKind.projectil_de_la_mort, SpriteKind.ennemi_vivant, function (sprite, otherSprite) {
@@ -90,7 +91,11 @@ sprites.onOverlap(SpriteKind.projectil_de_la_mort, SpriteKind.big_boss, function
     statusbars.getStatusBarAttachedTo(StatusBarKind.big_bosshealt, otherSprite).value += -72
 })
 statusbars.onZero(StatusBarKind.Health, function (status) {
-    pause(100)
+    energie.value = 0
+    vaisseau.startEffect(effects.fire)
+    music.beamUp.play()
+    sprites.destroy(vaisseau)
+    pause(3000)
     game.over(false)
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
