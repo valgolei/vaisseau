@@ -17,7 +17,7 @@ namespace StatusBarKind {
 sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.BOSS, function (sprite, otherSprite) {
     music.smallCrash.play()
     sprite.destroy()
-    statusbar.value += -1
+    Vie_boss.value += -1
 })
 statusbars.onZero(StatusBarKind.big_bosshealt, function (status) {
     status.spriteAttachedTo().destroy()
@@ -46,6 +46,21 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.tir_ennemi, function (sprite, ot
     vie.value += -15
     music.smallCrash.play()
 })
+function Difficilté (difficulté: string) {
+    if (difficulté == "facile") {
+        vie.max = 150
+        vie.value = 150
+    } else if (difficulté == "difficile") {
+        vie.max = 50
+        vie.value = 50
+    } else if (difficulté == "extrême") {
+        vie.max = 1
+        vie.value = 1
+    } else {
+        vie.max = 100
+        vie.value = 100
+    }
+}
 sprites.onOverlap(SpriteKind.Player, SpriteKind.fruit, function (sprite, otherSprite) {
     otherSprite.destroy()
     music.baDing.play()
@@ -60,6 +75,13 @@ sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.big_boss, function (sprite, oth
     music.smallCrash.play()
     sprite.destroy()
     statusbars.getStatusBarAttachedTo(StatusBarKind.big_bosshealt, otherSprite).value += -18
+})
+info.onCountdownEnd(function () {
+    BOSS2 = sprites.create(assets.image`BOSS`, SpriteKind.BOSS)
+    BOSS2.setPosition(80, 45)
+    Vie_boss = statusbars.create(100, 5, StatusBarKind.BOSSHEALT)
+    Vie_boss.setPosition(80, 5)
+    Vie_boss.setColor(2, 11)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (energie.value != 0) {
@@ -84,7 +106,7 @@ statusbars.onZero(StatusBarKind.EnemyHealth, function (status) {
 sprites.onOverlap(SpriteKind.projectil_de_la_mort, SpriteKind.BOSS, function (sprite, otherSprite) {
     music.bigCrash.play()
     sprite.destroy()
-    statusbar.value += -6
+    Vie_boss.value += -6
 })
 sprites.onOverlap(SpriteKind.projectil_de_la_mort, SpriteKind.big_boss, function (sprite, otherSprite) {
     music.bigCrash.play()
@@ -152,7 +174,7 @@ let ennemi_a: Sprite = null
 let projectile_de_la_mort_ami: Sprite = null
 let tir_joueur: Sprite = null
 let BOSS2: Sprite = null
-let statusbar: StatusBarSprite = null
+let Vie_boss: StatusBarSprite = null
 let energie: StatusBarSprite = null
 let magie: StatusBarSprite = null
 let vie: StatusBarSprite = null
@@ -180,6 +202,7 @@ controller.moveSprite(vaisseau, 85, 85)
 vaisseau.setStayInScreen(true)
 vie = statusbars.create(12, 3, StatusBarKind.Health)
 vie.attachToSprite(vaisseau, -18, 0)
+Difficilté("normal")
 magie = statusbars.create(25, 4, StatusBarKind.Magic)
 magie.setPosition(16, 6)
 energie = statusbars.create(20, 4, StatusBarKind.Energy)
@@ -208,13 +231,7 @@ game.onUpdate(function () {
         for (let ennemi_d2 of sprites.allOfKind(SpriteKind.tirreur_de_direction)) {
             ennemi_d2.destroy()
         }
-        BOSS2 = sprites.create(assets.image`BOSS`, SpriteKind.tir_ami)
-        BOSS2.setPosition(80, 45)
-        pause(100)
-        BOSS2.setKind(SpriteKind.BOSS)
-        statusbar = statusbars.create(100, 5, StatusBarKind.BOSSHEALT)
-        statusbar.setPosition(80, 5)
-        statusbar.setColor(2, 11)
+        info.startCountdown(2)
     }
 })
 game.onUpdate(function () {
