@@ -48,15 +48,19 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.tir_ennemi, function (sprite, ot
 })
 function Difficilté (difficulté: string) {
     if (difficulté == "facile") {
+        vie = statusbars.create(12, 3, StatusBarKind.Health)
         vie.max = 150
         vie.value = 150
     } else if (difficulté == "difficile") {
+        vie = statusbars.create(12, 3, StatusBarKind.Health)
         vie.max = 50
         vie.value = 50
     } else if (difficulté == "extrême") {
+        vie = statusbars.create(0, 0, StatusBarKind.Health)
         vie.max = 1
         vie.value = 1
     } else {
+        vie = statusbars.create(12, 3, StatusBarKind.Health)
         vie.max = 100
         vie.value = 100
     }
@@ -158,19 +162,19 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     music.bigCrash.play()
 })
 let pomme: Sprite = null
-let ennemi_d: Sprite = null
 let t_d_BOSS: Sprite = null
 let tir_de_direction: Sprite = null
 let vitesse = 0
 let dy = 0
 let dx = 0
 let TIRBOSS: Sprite = null
-let projectile_ennemi: Sprite = null
-let tir_big_boss2: Sprite = null
+let ennemi_d: Sprite = null
 let ennemi_c: Sprite = null
+let ennemi_a: Sprite = null
 let vie_ennemi: StatusBarSprite = null
 let ennemi_b: Sprite = null
-let ennemi_a: Sprite = null
+let projectile_ennemi: Sprite = null
+let tir_big_boss2: Sprite = null
 let projectile_de_la_mort_ami: Sprite = null
 let tir_joueur: Sprite = null
 let BOSS2: Sprite = null
@@ -200,19 +204,30 @@ vaisseau = sprites.create(img`
     `, SpriteKind.Player)
 controller.moveSprite(vaisseau, 85, 85)
 vaisseau.setStayInScreen(true)
-vie = statusbars.create(12, 3, StatusBarKind.Health)
-vie.attachToSprite(vaisseau, -18, 0)
 Difficilté("normal")
+vie.attachToSprite(vaisseau, -18, 0)
 magie = statusbars.create(25, 4, StatusBarKind.Magic)
 magie.setPosition(16, 6)
 energie = statusbars.create(20, 4, StatusBarKind.Energy)
 energie.setPosition(12, 115)
 info.setScore(0)
+let Jauge_de_terreur = 5000
+let Jauge_de_big_boss = 0
+let jauge_de_tirreur_de_direction = 0
+let jauge_de_shuriken = 5000
 game.onUpdate(function () {
     for (let ennemi_c22 of sprites.allOfKind(SpriteKind.big_boss)) {
         if (ennemi_c22.y > 125) {
             ennemi_c22.destroy()
             vie.value += -60
+        }
+    }
+})
+game.onUpdate(function () {
+    for (let ennemi_b22 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
+        if (ennemi_b22.y > 125) {
+            ennemi_b22.destroy()
+            vie.value += -30
         }
     }
 })
@@ -234,95 +249,15 @@ game.onUpdate(function () {
         info.startCountdown(2)
     }
 })
-game.onUpdate(function () {
-    for (let ennemi_b22 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
-        if (ennemi_b22.y > 125) {
-            ennemi_b22.destroy()
-            vie.value += -30
-        }
-    }
-})
-game.onUpdateInterval(7000, function () {
-    if (info.score() < 60) {
-        ennemi_a = sprites.createProjectileFromSide(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . 2 2 . . . . . . . 
-            . . . . . 2 . f . . . . . . . . 
-            . . . . . 2 f 9 f 2 . . . . . . 
-            . . . . . . . f . 2 . . . . . . 
-            . . . . . . 2 2 . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, 0, 74)
-        ennemi_a.x = randint(5, 155)
-        ennemi_a.setKind(SpriteKind.Enemy)
-        ennemi_b = sprites.createProjectileFromSide(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . 1 . . . . 1 . . . . . 
-            . . . . . d d d d d d . . . . . 
-            . . . . . d . 9 9 . d f . . . . 
-            . . . . . d . . . . d . . . . . 
-            . . . . . 2 . . . . 2 . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, 0, 5)
-        ennemi_b.x = randint(6, 154)
-        ennemi_b.setKind(SpriteKind.ennemi_vivant)
-        vie_ennemi = statusbars.create(8, 1, StatusBarKind.EnemyHealth)
-        vie_ennemi.attachToSprite(ennemi_b, -2, 0)
-    }
-})
 game.onUpdateInterval(2000, function () {
     if (energie.value == 0) {
         vie.value += -4
     }
     if (energie.value > 50) {
-        vie.value += 2
+        vie.value += 2 * (vie.max / 100)
     }
     if (energie.value == 100) {
-        vie.value += 3
-    }
-})
-game.onUpdateInterval(24000, function () {
-    if (info.score() > 9 && info.score() < 60) {
-        ennemi_c = sprites.createProjectileFromSide(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . 6 . . . . . . . . 
-            . . . . . . 6 6 6 . . . . . . . 
-            . . . . . . 8 8 8 . . . . . . . 
-            . . . . . 8 8 8 8 8 . . . . . . 
-            . . . . 8 8 8 8 8 8 8 . . . . . 
-            . . . . 8 8 8 8 8 8 8 . . . . . 
-            . . . . 8 8 8 8 8 8 8 f . . . . 
-            . . . . 9 8 8 8 8 8 9 . . . . . 
-            . . . . 9 . 8 8 8 . 9 . . . . . 
-            . . . . 2 . . 2 . . 2 . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, 0, 5)
-        ennemi_c.x = randint(5, 155)
-        ennemi_c.setKind(SpriteKind.big_boss)
-        vie_ennemi = statusbars.create(10, 1, StatusBarKind.big_bosshealt)
-        vie_ennemi.attachToSprite(ennemi_c, -2, 0)
+        vie.value += 2 * (vie.max / 100)
     }
 })
 game.onUpdateInterval(1000, function () {
@@ -360,6 +295,93 @@ game.onUpdateInterval(1000, function () {
             projectile_ennemi.setKind(SpriteKind.tir_ennemi)
         }
     }
+})
+forever(function () {
+    if (Jauge_de_terreur > 7000 - info.score() * 40 && info.score() < 60) {
+        Jauge_de_terreur = 0
+        ennemi_b = sprites.createProjectileFromSide(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . 1 . . . . 1 . . . . . 
+            . . . . . d d d d d d . . . . . 
+            . . . . . d . 9 9 . d f . . . . 
+            . . . . . d . . . . d . . . . . 
+            . . . . . 2 . . . . 2 . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, 0, 5)
+        ennemi_b.x = randint(6, 154)
+        ennemi_b.setKind(SpriteKind.ennemi_vivant)
+        vie_ennemi = statusbars.create(8, 1, StatusBarKind.EnemyHealth)
+        vie_ennemi.attachToSprite(ennemi_b, -2, 0)
+    }
+    if (jauge_de_shuriken > 6000 - info.score() * 40 && info.score() < 60) {
+        jauge_de_shuriken = 0
+        ennemi_a = sprites.createProjectileFromSide(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . 2 2 . . . . . . . 
+            . . . . . 2 . f . . . . . . . . 
+            . . . . . 2 f 9 f 2 . . . . . . 
+            . . . . . . . f . 2 . . . . . . 
+            . . . . . . 2 2 . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, 0, 74)
+        ennemi_a.x = randint(5, 155)
+        ennemi_a.setKind(SpriteKind.Enemy)
+    }
+    if (Jauge_de_big_boss > 24000 - info.score() * 100 && (info.score() > 9 && info.score() < 60)) {
+        Jauge_de_big_boss = 0
+        ennemi_c = sprites.createProjectileFromSide(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . 6 . . . . . . . . 
+            . . . . . . 6 6 6 . . . . . . . 
+            . . . . . . 8 8 8 . . . . . . . 
+            . . . . . 8 8 8 8 8 . . . . . . 
+            . . . . 8 8 8 8 8 8 8 . . . . . 
+            . . . . 8 8 8 8 8 8 8 . . . . . 
+            . . . . 8 8 8 8 8 8 8 f . . . . 
+            . . . . 9 8 8 8 8 8 9 . . . . . 
+            . . . . 9 . 8 8 8 . 9 . . . . . 
+            . . . . 2 . . 2 . . 2 . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, 0, 5)
+        ennemi_c.x = randint(5, 155)
+        ennemi_c.setKind(SpriteKind.big_boss)
+        vie_ennemi = statusbars.create(10, 1, StatusBarKind.big_bosshealt)
+        vie_ennemi.attachToSprite(ennemi_c, -2, 0)
+    }
+    if (jauge_de_tirreur_de_direction > 20000 - info.score() * 80 && (info.score() > 30 && info.score() < 60)) {
+        jauge_de_tirreur_de_direction = 0
+        ennemi_d = sprites.createProjectileFromSide(assets.image`a`, 0, 5)
+        ennemi_d.x = randint(5, 155)
+        ennemi_d.setKind(SpriteKind.tirreur_de_direction)
+    }
+})
+game.onUpdateInterval(100, function () {
+    Jauge_de_terreur += 100
+    Jauge_de_big_boss += 100
+    jauge_de_shuriken += 100
+    jauge_de_tirreur_de_direction += 100
 })
 game.onUpdateInterval(300, function () {
     for (let BOSS3 of sprites.allOfKind(SpriteKind.BOSS)) {
@@ -408,11 +430,7 @@ game.onUpdateInterval(3000, function () {
     }
 })
 game.onUpdateInterval(20000, function () {
-    if (info.score() > 40 && info.score() < 60) {
-        ennemi_d = sprites.createProjectileFromSide(assets.image`a`, 0, 5)
-        ennemi_d.x = randint(5, 155)
-        ennemi_d.setKind(SpriteKind.tirreur_de_direction)
-    }
+	
 })
 game.onUpdateInterval(10000, function () {
     pomme = sprites.createProjectileFromSide(img`
