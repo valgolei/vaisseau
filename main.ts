@@ -173,8 +173,8 @@ let ennemi_c: Sprite = null
 let ennemi_a: Sprite = null
 let vie_ennemi: StatusBarSprite = null
 let ennemi_b: Sprite = null
-let projectile_ennemi: Sprite = null
 let tir_big_boss2: Sprite = null
+let projectile_ennemi: Sprite = null
 let projectile_de_la_mort_ami: Sprite = null
 let tir_joueur: Sprite = null
 let BOSS2: Sprite = null
@@ -204,7 +204,7 @@ vaisseau = sprites.create(img`
     `, SpriteKind.Player)
 controller.moveSprite(vaisseau, 85, 85)
 vaisseau.setStayInScreen(true)
-Difficilté("normal")
+Difficilté("extrême")
 vie.attachToSprite(vaisseau, -18, 0)
 magie = statusbars.create(25, 4, StatusBarKind.Magic)
 magie.setPosition(16, 6)
@@ -215,22 +215,6 @@ let Jauge_de_terreur = 5000
 let Jauge_de_big_boss = 0
 let jauge_de_tirreur_de_direction = 0
 let jauge_de_shuriken = 5000
-game.onUpdate(function () {
-    for (let ennemi_c22 of sprites.allOfKind(SpriteKind.big_boss)) {
-        if (ennemi_c22.y > 125) {
-            ennemi_c22.destroy()
-            vie.value += -60
-        }
-    }
-})
-game.onUpdate(function () {
-    for (let ennemi_b22 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
-        if (ennemi_b22.y > 125) {
-            ennemi_b22.destroy()
-            vie.value += -30
-        }
-    }
-})
 game.onUpdate(function () {
     if (info.score() > 59 && info.score() < 63) {
         info.setScore(100)
@@ -249,6 +233,22 @@ game.onUpdate(function () {
         info.startCountdown(2)
     }
 })
+game.onUpdate(function () {
+    for (let ennemi_c22 of sprites.allOfKind(SpriteKind.big_boss)) {
+        if (ennemi_c22.y > 125) {
+            ennemi_c22.destroy()
+            vie.value += -60
+        }
+    }
+})
+game.onUpdate(function () {
+    for (let ennemi_b22 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
+        if (ennemi_b22.y > 125) {
+            ennemi_b22.destroy()
+            vie.value += -30
+        }
+    }
+})
 game.onUpdateInterval(2000, function () {
     if (energie.value == 0) {
         vie.value += -4
@@ -258,6 +258,21 @@ game.onUpdateInterval(2000, function () {
     }
     if (energie.value == 100) {
         vie.value += 2 * (vie.max / 100)
+    }
+})
+game.onUpdateInterval(1000, function () {
+    for (let ennemi_b3 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
+        if (Math.percentChance(50)) {
+            projectile_ennemi = sprites.createProjectileFromSprite(img`
+                . . . 
+                . 2 . 
+                . 2 . 
+                . 2 . 
+                . 2 . 
+                . . . 
+                `, ennemi_b3, 0, 60)
+            projectile_ennemi.setKind(SpriteKind.tir_ennemi)
+        }
     }
 })
 game.onUpdateInterval(1000, function () {
@@ -278,21 +293,6 @@ game.onUpdateInterval(1000, function () {
             if (Math.percentChance(50)) {
                 tir_big_boss2.x += -2
             }
-        }
-    }
-})
-game.onUpdateInterval(1000, function () {
-    for (let ennemi_b3 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
-        if (Math.percentChance(50)) {
-            projectile_ennemi = sprites.createProjectileFromSprite(img`
-                . . . 
-                . 2 . 
-                . 2 . 
-                . 2 . 
-                . 2 . 
-                . . . 
-                `, ennemi_b3, 0, 60)
-            projectile_ennemi.setKind(SpriteKind.tir_ennemi)
         }
     }
 })
@@ -428,9 +428,6 @@ game.onUpdateInterval(3000, function () {
             t_d_BOSS.setKind(SpriteKind.Enemy)
         }
     }
-})
-game.onUpdateInterval(20000, function () {
-	
 })
 game.onUpdateInterval(10000, function () {
     pomme = sprites.createProjectileFromSide(img`
