@@ -357,7 +357,7 @@ forever(function () {
         vie_ennemi = statusbars.create(10, 1, StatusBarKind.big_bosshealt)
         vie_ennemi.attachToSprite(ennemi_c, -2, 0)
     }
-    if (jauge_de_tirreur_de_direction > 20000 - info.score() * 80 && (info.score() > 30 && info.score() < 60)) {
+    if (jauge_de_tirreur_de_direction > 20000 - info.score() * 80 && (info.score() > 29 && info.score() < 60)) {
         jauge_de_tirreur_de_direction = 0
         ennemi_d = sprites.createProjectileFromSide(assets.image`a`, 0, 5)
         ennemi_d.x = randint(5, 155)
