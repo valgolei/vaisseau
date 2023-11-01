@@ -48,21 +48,25 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.tir_ennemi, function (sprite, ot
 })
 function Difficilté (difficulté: string) {
     if (difficulté == "facile") {
-        vie = statusbars.create(12, 3, StatusBarKind.Health)
+        vie = statusbars.create(12, 4, StatusBarKind.Health)
         vie.max = 150
         vie.value = 150
+        challenge = 0.8
     } else if (difficulté == "difficile") {
-        vie = statusbars.create(12, 3, StatusBarKind.Health)
+        vie = statusbars.create(12, 2, StatusBarKind.Health)
         vie.max = 50
         vie.value = 50
+        challenge = 1.2
     } else if (difficulté == "extrême") {
         vie = statusbars.create(0, 0, StatusBarKind.Health)
         vie.max = 1
         vie.value = 1
+        challenge = 1.3
     } else {
         vie = statusbars.create(12, 3, StatusBarKind.Health)
         vie.max = 100
         vie.value = 100
+        challenge = 1
     }
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.fruit, function (sprite, otherSprite) {
@@ -177,6 +181,7 @@ let tir_big_boss2: Sprite = null
 let projectile_ennemi: Sprite = null
 let projectile_de_la_mort_ami: Sprite = null
 let tir_joueur: Sprite = null
+let challenge = 0
 let BOSS2: Sprite = null
 let Vie_boss: StatusBarSprite = null
 let energie: StatusBarSprite = null
@@ -205,7 +210,7 @@ vaisseau = sprites.create(img`
 controller.moveSprite(vaisseau, 85, 85)
 vaisseau.setStayInScreen(true)
 Difficilté("normal")
-vie.attachToSprite(vaisseau, -18, 0)
+vie.attachToSprite(vaisseau, -17, 0)
 magie = statusbars.create(25, 4, StatusBarKind.Magic)
 magie.setPosition(16, 6)
 energie = statusbars.create(20, 4, StatusBarKind.Energy)
@@ -215,24 +220,6 @@ let Jauge_de_terreur = 5000
 let Jauge_de_big_boss = 0
 let jauge_de_tirreur_de_direction = 0
 let jauge_de_shuriken = 5000
-game.onUpdate(function () {
-    if (info.score() > 59 && info.score() < 63) {
-        info.setScore(100)
-        for (let ennemi_a2 of sprites.allOfKind(SpriteKind.Enemy)) {
-            ennemi_a2.destroy()
-        }
-        for (let ennemi_b2 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
-            ennemi_b2.destroy()
-        }
-        for (let ennemi_c2 of sprites.allOfKind(SpriteKind.big_boss)) {
-            ennemi_c2.destroy()
-        }
-        for (let ennemi_d2 of sprites.allOfKind(SpriteKind.tirreur_de_direction)) {
-            ennemi_d2.destroy()
-        }
-        info.startCountdown(2)
-    }
-})
 game.onUpdate(function () {
     for (let ennemi_c22 of sprites.allOfKind(SpriteKind.big_boss)) {
         if (ennemi_c22.y > 125) {
@@ -270,7 +257,7 @@ game.onUpdateInterval(1000, function () {
                 . 2 . 
                 . 2 . 
                 . . . 
-                `, ennemi_b3, 0, 60)
+                `, ennemi_b3, 0, 60 * challenge)
             projectile_ennemi.setKind(SpriteKind.tir_ennemi)
         }
     }
@@ -285,7 +272,7 @@ game.onUpdateInterval(1000, function () {
                 . 2 . 
                 . 2 . 
                 . . . 
-                `, ennemi_c3, 0, 55)
+                `, ennemi_c3, 0, 50 * challenge)
             tir_big_boss2.setKind(SpriteKind.tir_ennemi)
             if (Math.percentChance(50)) {
                 tir_big_boss2.x += 2
@@ -376,12 +363,28 @@ forever(function () {
         ennemi_d.x = randint(5, 155)
         ennemi_d.setKind(SpriteKind.tirreur_de_direction)
     }
+    if (info.score() > 59 && info.score() < 63) {
+        info.setScore(100)
+        for (let ennemi_a2 of sprites.allOfKind(SpriteKind.Enemy)) {
+            ennemi_a2.destroy()
+        }
+        for (let ennemi_b2 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
+            ennemi_b2.destroy()
+        }
+        for (let ennemi_c2 of sprites.allOfKind(SpriteKind.big_boss)) {
+            ennemi_c2.destroy()
+        }
+        for (let ennemi_d2 of sprites.allOfKind(SpriteKind.tirreur_de_direction)) {
+            ennemi_d2.destroy()
+        }
+        info.startCountdown(2)
+    }
 })
 game.onUpdateInterval(100, function () {
-    Jauge_de_terreur += 100
-    Jauge_de_big_boss += 100
-    jauge_de_shuriken += 100
-    jauge_de_tirreur_de_direction += 100
+    Jauge_de_terreur += 100 * challenge
+    Jauge_de_big_boss += 100 * challenge
+    jauge_de_shuriken += 100 * challenge
+    jauge_de_tirreur_de_direction += 100 * challenge
 })
 game.onUpdateInterval(300, function () {
     for (let BOSS3 of sprites.allOfKind(SpriteKind.BOSS)) {
@@ -392,7 +395,7 @@ game.onUpdateInterval(300, function () {
             2 2 2 
             . 2 . 
             . . . 
-            `, BOSS3, 0, 100)
+            `, BOSS3, 0, 100 * challenge)
         TIRBOSS.setKind(SpriteKind.tir_ennemi)
         TIRBOSS.setPosition(randint(0, 160), randint(0, 60))
     }
@@ -402,7 +405,7 @@ game.onUpdateInterval(3000, function () {
         if (Math.percentChance(60)) {
             dx = ennemi_d22.x - vaisseau.x
             dy = ennemi_d22.y - vaisseau.y
-            vitesse = 55 / Math.sqrt(dx * dx + dy * dy)
+            vitesse = 50 * challenge / Math.sqrt(dx * dx + dy * dy)
             tir_de_direction = sprites.createProjectileFromSprite(img`
                 . 2 . 
                 2 2 2 
@@ -417,7 +420,7 @@ game.onUpdateInterval(3000, function () {
         if (Math.percentChance(60)) {
             dx = BOSS2.x - vaisseau.x
             dy = BOSS2.y - vaisseau.y
-            vitesse = 55 / Math.sqrt(dx * dx + dy * dy)
+            vitesse = 50 * challenge / Math.sqrt(dx * dx + dy * dy)
             t_d_BOSS = sprites.createProjectileFromSprite(img`
                 . . d . . 
                 . d d d . 
