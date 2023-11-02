@@ -380,6 +380,29 @@ forever(function () {
         info.startCountdown(2)
     }
 })
+forever(function () {
+    music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("C F A F C5 F A F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("D C E C D G G G ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("C F A F C5 F A F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("D F E C D E C C ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("C5 B C5 A C5 G C5 F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("C5 E C5 D C5 C C5 C ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("G G G G G G G G ", (600 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("G G G G G G G G ", (600 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("G G G G G G G G ", (600 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("C D E F G A B C5 ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("E F G E A G F D ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("G F E D C E D A ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("F B A G F G E A ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("E F A G D D E F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("A G F E G F E D ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("F E D C E D C D ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("C C5 B A G F E D ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+})
 game.onUpdateInterval(100, function () {
     Jauge_de_terreur += 100 * challenge
     Jauge_de_big_boss += 100 * challenge
