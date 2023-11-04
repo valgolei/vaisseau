@@ -36,7 +36,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.BOSS, function (sprite, otherSpr
     vie.value += -1
 })
 statusbars.onZero(StatusBarKind.BOSSHEALT, function (status) {
-    BOSS2.startEffect(effects.spray)
+    BOSS2.startEffect(effects.disintegrate)
     BOSS2.startEffect(effects.fire)
     BOSS2.startEffect(effects.halo)
     BOSS2.destroy(effects.spray, 2000)
@@ -209,7 +209,7 @@ vaisseau = sprites.create(img`
     `, SpriteKind.Player)
 controller.moveSprite(vaisseau, 85, 85)
 vaisseau.setStayInScreen(true)
-Difficilté("difficile")
+Difficilté("normal")
 vie.attachToSprite(vaisseau, -17, 0)
 magie = statusbars.create(25, 4, StatusBarKind.Magic)
 magie.setPosition(16, 6)
@@ -220,22 +220,6 @@ let Jauge_de_terreur = 5000
 let Jauge_de_big_boss = 0
 let jauge_de_tirreur_de_direction = 0
 let jauge_de_shuriken = 5000
-game.onUpdate(function () {
-    for (let ennemi_c22 of sprites.allOfKind(SpriteKind.big_boss)) {
-        if (ennemi_c22.y > 125) {
-            ennemi_c22.destroy()
-            vie.value += -60
-        }
-    }
-})
-game.onUpdate(function () {
-    for (let ennemi_b22 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
-        if (ennemi_b22.y > 125) {
-            ennemi_b22.destroy()
-            vie.value += -30
-        }
-    }
-})
 game.onUpdateInterval(2000, function () {
     if (energie.value == 0) {
         vie.value += -4
@@ -261,8 +245,6 @@ game.onUpdateInterval(1000, function () {
             projectile_ennemi.setKind(SpriteKind.tir_ennemi)
         }
     }
-})
-game.onUpdateInterval(1000, function () {
     for (let ennemi_c3 of sprites.allOfKind(SpriteKind.big_boss)) {
         if (Math.percentChance(60)) {
             tir_big_boss2 = sprites.createProjectileFromSprite(img`
@@ -379,6 +361,20 @@ forever(function () {
         }
         info.startCountdown(2)
     }
+    for (let ennemi_c22 of sprites.allOfKind(SpriteKind.big_boss)) {
+        if (ennemi_c22.y > 125) {
+            music.buzzer.play()
+            ennemi_c22.destroy()
+            vie.value += -60
+        }
+    }
+    for (let ennemi_b22 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
+        if (ennemi_b22.y > 125) {
+            music.buzzer.play()
+            ennemi_b22.destroy()
+            vie.value += -30
+        }
+    }
 })
 forever(function () {
     music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
@@ -389,10 +385,10 @@ forever(function () {
     music.play(music.stringPlayable("C F A F C5 F A F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
     music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
     music.play(music.stringPlayable("D F E C D E C C ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("C5 B C5 A C5 G C5 F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
     music.play(music.stringPlayable("C5 E C5 D C5 C C5 C ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("G G G G G G G G ", (600 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("G G G G G G G G ", (600 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("G G G G G G G G ", (200 + info.score()) * challenge * 2), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("G G G G G G G G ", (200 + info.score()) * challenge * 2), music.PlaybackMode.UntilDone)
     music.play(music.stringPlayable("C D E F G A B C5 ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
     music.play(music.stringPlayable("E F G E A G F D ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
     music.play(music.stringPlayable("G F E D C E D A ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
