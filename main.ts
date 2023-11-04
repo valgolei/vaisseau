@@ -36,7 +36,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.BOSS, function (sprite, otherSpr
     vie.value += -1
 })
 statusbars.onZero(StatusBarKind.BOSSHEALT, function (status) {
-    BOSS2.startEffect(effects.disintegrate)
+    BOSS2.startEffect(effects.spray)
     BOSS2.startEffect(effects.fire)
     BOSS2.startEffect(effects.halo)
     BOSS2.destroy(effects.spray, 2000)
@@ -245,6 +245,8 @@ game.onUpdateInterval(1000, function () {
             projectile_ennemi.setKind(SpriteKind.tir_ennemi)
         }
     }
+})
+game.onUpdateInterval(1000, function () {
     for (let ennemi_c3 of sprites.allOfKind(SpriteKind.big_boss)) {
         if (Math.percentChance(60)) {
             tir_big_boss2 = sprites.createProjectileFromSprite(img`
@@ -385,7 +387,7 @@ forever(function () {
     music.play(music.stringPlayable("C F A F C5 F A F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
     music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
     music.play(music.stringPlayable("D F E C D E C C ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("C5 B C5 A C5 G C5 F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
     music.play(music.stringPlayable("C5 E C5 D C5 C C5 C ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
     music.play(music.stringPlayable("G G G G G G G G ", (200 + info.score()) * challenge * 2), music.PlaybackMode.UntilDone)
     music.play(music.stringPlayable("G G G G G G G G ", (200 + info.score()) * challenge * 2), music.PlaybackMode.UntilDone)
