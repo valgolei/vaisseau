@@ -209,7 +209,7 @@ vaisseau = sprites.create(img`
     `, SpriteKind.Player)
 controller.moveSprite(vaisseau, 85, 85)
 vaisseau.setStayInScreen(true)
-Difficilté("normal")
+Difficilté("difficile")
 vie.attachToSprite(vaisseau, -17, 0)
 magie = statusbars.create(25, 4, StatusBarKind.Magic)
 magie.setPosition(16, 6)
@@ -236,25 +236,23 @@ game.onUpdateInterval(1000, function () {
         if (Math.percentChance(50)) {
             projectile_ennemi = sprites.createProjectileFromSprite(img`
                 . . . 
-                . 2 . 
-                . 2 . 
-                . 2 . 
-                . 2 . 
+                . 1 . 
+                . 1 . 
+                . 1 . 
+                . 1 . 
                 . . . 
                 `, ennemi_b3, 0, 60 * challenge)
             projectile_ennemi.setKind(SpriteKind.tir_ennemi)
         }
     }
-})
-game.onUpdateInterval(1000, function () {
     for (let ennemi_c3 of sprites.allOfKind(SpriteKind.big_boss)) {
         if (Math.percentChance(60)) {
             tir_big_boss2 = sprites.createProjectileFromSprite(img`
                 . . . 
-                . 2 . 
-                . 2 . 
-                . 2 . 
-                . 2 . 
+                . 8 . 
+                . 8 . 
+                . 8 . 
+                . 8 . 
                 . . . 
                 `, ennemi_c3, 0, 50 * challenge)
             tir_big_boss2.setKind(SpriteKind.tir_ennemi)
@@ -415,11 +413,11 @@ game.onUpdateInterval(100, function () {
 game.onUpdateInterval(300, function () {
     for (let BOSS3 of sprites.allOfKind(SpriteKind.BOSS)) {
         TIRBOSS = sprites.createProjectileFromSprite(img`
-            . 2 . 
-            2 2 2 
-            . 2 . 
-            2 2 2 
-            . 2 . 
+            . a . 
+            e 1 e 
+            . 1 . 
+            e 1 e 
+            . a . 
             . . . 
             `, BOSS3, 0, 100 * challenge)
         TIRBOSS.setKind(SpriteKind.tir_ennemi)
@@ -433,9 +431,9 @@ game.onUpdateInterval(3000, function () {
             dy = ennemi_d22.y - vaisseau.y
             vitesse = 50 * challenge / Math.sqrt(dx * dx + dy * dy)
             tir_de_direction = sprites.createProjectileFromSprite(img`
-                . 2 . 
-                2 2 2 
-                . 2 . 
+                . 5 . 
+                5 5 5 
+                . 5 . 
                 `, ennemi_d22, (vaisseau.x - ennemi_d22.x) * vitesse, (vaisseau.y - ennemi_d22.y) * vitesse)
             tir_de_direction.setKind(SpriteKind.tir_ennemi)
         }
