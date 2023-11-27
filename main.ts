@@ -209,7 +209,7 @@ vaisseau = sprites.create(img`
     `, SpriteKind.Player)
 controller.moveSprite(vaisseau, 85, 85)
 vaisseau.setStayInScreen(true)
-Difficilté("difficile")
+Difficilté("normal")
 vie.attachToSprite(vaisseau, -17, 0)
 magie = statusbars.create(25, 4, StatusBarKind.Magic)
 magie.setPosition(16, 6)
