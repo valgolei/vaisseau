@@ -47,21 +47,28 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.tir_ennemi, function (sprite, ot
     music.smallCrash.play()
 })
 function Difficilté (difficulté: string) {
-    if (difficulté == "facile") {
-        vie = statusbars.create(12, 4, StatusBarKind.Health)
-        vie.max = 150
-        vie.value = 150
-        challenge = 0.8
-    } else if (difficulté == "difficile") {
-        vie = statusbars.create(12, 2, StatusBarKind.Health)
-        vie.max = 50
-        vie.value = 50
-        challenge = 1.2
-    } else if (difficulté == "extrême") {
-        vie = statusbars.create(0, 0, StatusBarKind.Health)
-        vie.max = 1
-        vie.value = 1
-        challenge = 1.3
+    if (classique == 1) {
+        if (difficulté == "facile") {
+            vie = statusbars.create(12, 4, StatusBarKind.Health)
+            vie.max = 150
+            vie.value = 150
+            challenge = 0.8
+        } else if (difficulté == "difficile") {
+            vie = statusbars.create(12, 2, StatusBarKind.Health)
+            vie.max = 50
+            vie.value = 50
+            challenge = 1.2
+        } else if (difficulté == "extrême") {
+            vie = statusbars.create(0, 0, StatusBarKind.Health)
+            vie.max = 1
+            vie.value = 1
+            challenge = 1.3
+        } else {
+            vie = statusbars.create(12, 3, StatusBarKind.Health)
+            vie.max = 100
+            vie.value = 100
+            challenge = 1
+        }
     } else {
         vie = statusbars.create(12, 3, StatusBarKind.Health)
         vie.max = 100
@@ -79,6 +86,13 @@ sprites.onOverlap(SpriteKind.projectil_de_la_mort, SpriteKind.ennemi_vivant, fun
     sprite.destroy()
     statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -200
 })
+function mode (mode2: string) {
+    if (mode2 == "infini") {
+        classique = 0
+    } else {
+        classique = 1
+    }
+}
 sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.big_boss, function (sprite, otherSprite) {
     music.smallCrash.play()
     sprite.destroy()
@@ -182,6 +196,7 @@ let projectile_ennemi: Sprite = null
 let projectile_de_la_mort_ami: Sprite = null
 let tir_joueur: Sprite = null
 let challenge = 0
+let classique = 0
 let BOSS2: Sprite = null
 let Vie_boss: StatusBarSprite = null
 let energie: StatusBarSprite = null
@@ -209,6 +224,7 @@ vaisseau = sprites.create(img`
     `, SpriteKind.Player)
 controller.moveSprite(vaisseau, 85, 85)
 vaisseau.setStayInScreen(true)
+mode("classique")
 Difficilté("normal")
 vie.attachToSprite(vaisseau, -17, 0)
 magie = statusbars.create(25, 4, StatusBarKind.Magic)
@@ -266,100 +282,182 @@ game.onUpdateInterval(1000, function () {
     }
 })
 forever(function () {
-    if (Jauge_de_terreur > 7000 - info.score() * 40 && info.score() < 60) {
-        Jauge_de_terreur = 0
-        ennemi_b = sprites.createProjectileFromSide(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . 1 . . . . 1 . . . . . 
-            . . . . . d d d d d d . . . . . 
-            . . . . . d . 9 9 . d f . . . . 
-            . . . . . d . . . . d . . . . . 
-            . . . . . 2 . . . . 2 . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, 0, 5)
-        ennemi_b.x = randint(6, 154)
-        ennemi_b.setKind(SpriteKind.ennemi_vivant)
-        vie_ennemi = statusbars.create(8, 1, StatusBarKind.EnemyHealth)
-        vie_ennemi.attachToSprite(ennemi_b, -2, 0)
-    }
-    if (jauge_de_shuriken > 6000 - info.score() * 40 && info.score() < 60) {
-        jauge_de_shuriken = 0
-        ennemi_a = sprites.createProjectileFromSide(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . 2 2 . . . . . . . 
-            . . . . . 2 . f . . . . . . . . 
-            . . . . . 2 f 9 f 2 . . . . . . 
-            . . . . . . . f . 2 . . . . . . 
-            . . . . . . 2 2 . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, 0, 74)
-        ennemi_a.x = randint(5, 155)
-        ennemi_a.setKind(SpriteKind.Enemy)
-    }
-    if (Jauge_de_big_boss > 24000 - info.score() * 100 && (info.score() > 9 && info.score() < 60)) {
-        Jauge_de_big_boss = 0
-        ennemi_c = sprites.createProjectileFromSide(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . 6 . . . . . . . . 
-            . . . . . . 6 6 6 . . . . . . . 
-            . . . . . . 8 8 8 . . . . . . . 
-            . . . . . 8 8 8 8 8 . . . . . . 
-            . . . . 8 8 8 8 8 8 8 . . . . . 
-            . . . . 8 8 8 8 8 8 8 . . . . . 
-            . . . . 8 8 8 8 8 8 8 f . . . . 
-            . . . . 9 8 8 8 8 8 9 . . . . . 
-            . . . . 9 . 8 8 8 . 9 . . . . . 
-            . . . . 2 . . 2 . . 2 . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, 0, 5)
-        ennemi_c.x = randint(5, 155)
-        ennemi_c.setKind(SpriteKind.big_boss)
-        vie_ennemi = statusbars.create(10, 1, StatusBarKind.big_bosshealt)
-        vie_ennemi.attachToSprite(ennemi_c, -2, 0)
-    }
-    if (jauge_de_tirreur_de_direction > 20000 - info.score() * 80 && (info.score() > 29 && info.score() < 60)) {
-        jauge_de_tirreur_de_direction = 0
-        ennemi_d = sprites.createProjectileFromSide(assets.image`a`, 0, 5)
-        ennemi_d.x = randint(5, 155)
-        ennemi_d.setKind(SpriteKind.tirreur_de_direction)
-    }
-    if (info.score() > 59 && info.score() < 63) {
-        info.setScore(100)
-        for (let ennemi_a2 of sprites.allOfKind(SpriteKind.Enemy)) {
-            ennemi_a2.destroy()
+    if (classique == 1) {
+        if (Jauge_de_terreur > 7000 - info.score() * 40 && info.score() < 60) {
+            Jauge_de_terreur = 0
+            ennemi_b = sprites.createProjectileFromSide(img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . 1 . . . . 1 . . . . . 
+                . . . . . d d d d d d . . . . . 
+                . . . . . d . 9 9 . d f . . . . 
+                . . . . . d . . . . d . . . . . 
+                . . . . . 2 . . . . 2 . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `, 0, 5)
+            ennemi_b.x = randint(6, 154)
+            ennemi_b.setKind(SpriteKind.ennemi_vivant)
+            vie_ennemi = statusbars.create(8, 1, StatusBarKind.EnemyHealth)
+            vie_ennemi.attachToSprite(ennemi_b, -2, 0)
         }
-        for (let ennemi_b2 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
-            ennemi_b2.destroy()
+        if (jauge_de_shuriken > 6000 - info.score() * 40 && info.score() < 60) {
+            jauge_de_shuriken = 0
+            ennemi_a = sprites.createProjectileFromSide(img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . 2 2 . . . . . . . 
+                . . . . . 2 . f . . . . . . . . 
+                . . . . . 2 f 9 f 2 . . . . . . 
+                . . . . . . . f . 2 . . . . . . 
+                . . . . . . 2 2 . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `, 0, 74)
+            ennemi_a.x = randint(5, 155)
+            ennemi_a.setKind(SpriteKind.Enemy)
         }
-        for (let ennemi_c2 of sprites.allOfKind(SpriteKind.big_boss)) {
-            ennemi_c2.destroy()
+        if (Jauge_de_big_boss > 24000 - info.score() * 100 && (info.score() > 9 && info.score() < 60)) {
+            Jauge_de_big_boss = 0
+            ennemi_c = sprites.createProjectileFromSide(img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . 6 . . . . . . . . 
+                . . . . . . 6 6 6 . . . . . . . 
+                . . . . . . 8 8 8 . . . . . . . 
+                . . . . . 8 8 8 8 8 . . . . . . 
+                . . . . 8 8 8 8 8 8 8 . . . . . 
+                . . . . 8 8 8 8 8 8 8 . . . . . 
+                . . . . 8 8 8 8 8 8 8 f . . . . 
+                . . . . 9 8 8 8 8 8 9 . . . . . 
+                . . . . 9 . 8 8 8 . 9 . . . . . 
+                . . . . 2 . . 2 . . 2 . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `, 0, 5)
+            ennemi_c.x = randint(5, 155)
+            ennemi_c.setKind(SpriteKind.big_boss)
+            vie_ennemi = statusbars.create(10, 1, StatusBarKind.big_bosshealt)
+            vie_ennemi.attachToSprite(ennemi_c, -2, 0)
         }
-        for (let ennemi_d2 of sprites.allOfKind(SpriteKind.tirreur_de_direction)) {
-            ennemi_d2.destroy()
+        if (jauge_de_tirreur_de_direction > 20000 - info.score() * 80 && (info.score() > 29 && info.score() < 60)) {
+            jauge_de_tirreur_de_direction = 0
+            ennemi_d = sprites.createProjectileFromSide(assets.image`a`, 0, 5)
+            ennemi_d.x = randint(5, 155)
+            ennemi_d.setKind(SpriteKind.tirreur_de_direction)
         }
-        info.startCountdown(2)
+        if (info.score() > 59 && info.score() < 63) {
+            info.setScore(100)
+            for (let ennemi_a2 of sprites.allOfKind(SpriteKind.Enemy)) {
+                ennemi_a2.destroy()
+            }
+            for (let ennemi_b2 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
+                ennemi_b2.destroy()
+            }
+            for (let ennemi_c2 of sprites.allOfKind(SpriteKind.big_boss)) {
+                ennemi_c2.destroy()
+            }
+            for (let ennemi_d2 of sprites.allOfKind(SpriteKind.tirreur_de_direction)) {
+                ennemi_d2.destroy()
+            }
+            info.startCountdown(2)
+        }
+    } else {
+        if (Jauge_de_terreur > 7000 - Math.sqrt(info.score()) * 400) {
+            Jauge_de_terreur = 0
+            ennemi_b = sprites.createProjectileFromSide(img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . 1 . . . . 1 . . . . . 
+                . . . . . d d d d d d . . . . . 
+                . . . . . d . 9 9 . d f . . . . 
+                . . . . . d . . . . d . . . . . 
+                . . . . . 2 . . . . 2 . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `, 0, 5)
+            ennemi_b.x = randint(6, 154)
+            ennemi_b.setKind(SpriteKind.ennemi_vivant)
+            vie_ennemi = statusbars.create(8, 1, StatusBarKind.EnemyHealth)
+            vie_ennemi.attachToSprite(ennemi_b, -2, 0)
+        }
+        if (jauge_de_shuriken > 6000 - Math.sqrt(info.score()) * 400) {
+            jauge_de_shuriken = 0
+            ennemi_a = sprites.createProjectileFromSide(img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . 2 2 . . . . . . . 
+                . . . . . 2 . f . . . . . . . . 
+                . . . . . 2 f 9 f 2 . . . . . . 
+                . . . . . . . f . 2 . . . . . . 
+                . . . . . . 2 2 . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `, 0, 74)
+            ennemi_a.x = randint(5, 155)
+            ennemi_a.setKind(SpriteKind.Enemy)
+        }
+        if (Jauge_de_big_boss > 24000 - Math.sqrt(info.score()) * 1000 && info.score() > 9) {
+            Jauge_de_big_boss = 0
+            ennemi_c = sprites.createProjectileFromSide(img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . 6 . . . . . . . . 
+                . . . . . . 6 6 6 . . . . . . . 
+                . . . . . . 8 8 8 . . . . . . . 
+                . . . . . 8 8 8 8 8 . . . . . . 
+                . . . . 8 8 8 8 8 8 8 . . . . . 
+                . . . . 8 8 8 8 8 8 8 . . . . . 
+                . . . . 8 8 8 8 8 8 8 f . . . . 
+                . . . . 9 8 8 8 8 8 9 . . . . . 
+                . . . . 9 . 8 8 8 . 9 . . . . . 
+                . . . . 2 . . 2 . . 2 . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `, 0, 5)
+            ennemi_c.x = randint(5, 155)
+            ennemi_c.setKind(SpriteKind.big_boss)
+            vie_ennemi = statusbars.create(10, 1, StatusBarKind.big_bosshealt)
+            vie_ennemi.attachToSprite(ennemi_c, -2, 0)
+        }
+        if (jauge_de_tirreur_de_direction > 20000 - Math.sqrt(info.score()) * 800 && info.score() > 29) {
+            jauge_de_tirreur_de_direction = 0
+            ennemi_d = sprites.createProjectileFromSide(assets.image`a`, 0, 5)
+            ennemi_d.x = randint(5, 155)
+            ennemi_d.setKind(SpriteKind.tirreur_de_direction)
+        }
     }
     for (let ennemi_c22 of sprites.allOfKind(SpriteKind.big_boss)) {
         if (ennemi_c22.y > 125) {
