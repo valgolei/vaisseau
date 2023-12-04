@@ -24,9 +24,6 @@ statusbars.onZero(StatusBarKind.big_bosshealt, function (status) {
     magie.value += 40
     info.changeScoreBy(3)
 })
-sprites.onDestroyed(SpriteKind.BOSS, function (sprite) {
-    game.over(true)
-})
 sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.ennemi_vivant, function (sprite, otherSprite) {
     music.smallCrash.play()
     sprite.destroy()
@@ -36,10 +33,18 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.BOSS, function (sprite, otherSpr
     vie.value += -1
 })
 statusbars.onZero(StatusBarKind.BOSSHEALT, function (status) {
+    sprites.destroy(Vie_boss)
+    sprites.destroy(vie)
+    sprites.destroy(energie)
+    sprites.destroy(magie)
     BOSS2.startEffect(effects.spray)
     BOSS2.startEffect(effects.fire)
     BOSS2.startEffect(effects.halo)
-    BOSS2.destroy(effects.spray, 2000)
+    BOSS2.destroy(effects.disintegrate, 2000)
+    pause(2500)
+    scene.setBackgroundColor(6)
+    pause(3000)
+    game.over(true)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.tir_ennemi, function (sprite, otherSprite) {
     otherSprite.destroy()
