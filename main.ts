@@ -33,6 +33,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.BOSS, function (sprite, otherSpr
     vie.value += -1
 })
 statusbars.onZero(StatusBarKind.BOSSHEALT, function (status) {
+    effects.blizzard.endScreenEffect()
     sprites.destroy(Vie_boss)
     sprites.destroy(vie)
     sprites.destroy(energie)
@@ -43,6 +44,7 @@ statusbars.onZero(StatusBarKind.BOSSHEALT, function (status) {
     BOSS2.destroy(effects.disintegrate, 2000)
     pause(2500)
     scene.setBackgroundColor(6)
+    effects.confetti.startScreenEffect()
     pause(3000)
     game.over(true)
 })
@@ -104,6 +106,7 @@ sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.big_boss, function (sprite, oth
     statusbars.getStatusBarAttachedTo(StatusBarKind.big_bosshealt, otherSprite).value += -18
 })
 info.onCountdownEnd(function () {
+    effects.blizzard.startScreenEffect()
     BOSS2 = sprites.create(assets.image`BOSS`, SpriteKind.BOSS)
     BOSS2.setPosition(80, 45)
     Vie_boss = statusbars.create(100, 5, StatusBarKind.BOSSHEALT)
@@ -517,9 +520,9 @@ game.onUpdateInterval(300, function () {
     for (let BOSS3 of sprites.allOfKind(SpriteKind.BOSS)) {
         TIRBOSS = sprites.createProjectileFromSprite(img`
             . a . 
-            e 1 e 
+            2 1 2 
             . 1 . 
-            e 1 e 
+            2 1 2 
             . a . 
             . . . 
             `, BOSS3, 0, 100 * challenge)
