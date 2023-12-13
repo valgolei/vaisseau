@@ -31,7 +31,13 @@ sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.ennemi_vivant, function (sprite
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.BOSS, function (sprite, otherSprite) {
     vie.value += -1
+    touché()
 })
+function touché () {
+    scene.setBackgroundColor(2)
+    pause(50)
+    scene.setBackgroundColor(0)
+}
 statusbars.onZero(StatusBarKind.BOSSHEALT, function (status) {
     effects.blizzard.endScreenEffect()
     sprites.destroy(Vie_boss)
@@ -42,6 +48,9 @@ statusbars.onZero(StatusBarKind.BOSSHEALT, function (status) {
     BOSS2.startEffect(effects.fire)
     BOSS2.startEffect(effects.halo)
     BOSS2.destroy(effects.disintegrate, 2000)
+    scene.setBackgroundColor(7)
+    pause(50)
+    scene.setBackgroundColor(0)
     pause(2500)
     scene.setBackgroundColor(6)
     effects.confetti.startScreenEffect()
@@ -52,6 +61,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.tir_ennemi, function (sprite, ot
     otherSprite.destroy()
     vie.value += -15
     music.smallCrash.play()
+    touché()
 })
 function Difficilté (difficulté: string) {
     if (classique == 1) {
@@ -153,6 +163,7 @@ statusbars.onZero(StatusBarKind.Health, function (status) {
     vaisseau.startEffect(effects.fire)
     music.beamUp.play()
     sprites.destroy(vaisseau)
+    touché()
     pause(3000)
     game.over(false)
 })
@@ -176,16 +187,19 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.ennemi_vivant, function (sprite,
     vie.value += -34
     otherSprite.destroy()
     music.bigCrash.play()
+    touché()
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.big_boss, function (sprite, otherSprite) {
     otherSprite.destroy()
     vie.value += -66
     music.bigCrash.play()
+    touché()
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     vie.value += -34
     otherSprite.destroy()
     music.bigCrash.play()
+    touché()
 })
 let pomme: Sprite = null
 let t_d_BOSS: Sprite = null
@@ -472,6 +486,7 @@ forever(function () {
             music.buzzer.play()
             ennemi_c22.destroy()
             vie.value += -60
+            touché()
         }
     }
     for (let ennemi_b22 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
@@ -479,6 +494,7 @@ forever(function () {
             music.buzzer.play()
             ennemi_b22.destroy()
             vie.value += -30
+            touché()
         }
     }
 })
