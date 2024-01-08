@@ -55,6 +55,41 @@ statusbars.onZero(StatusBarKind.BOSSHEALT, function (status) {
     scene.setBackgroundColor(6)
     effects.confetti.startScreenEffect()
     pause(3000)
+    if (challenge == 1.3) {
+        game.showLongText("Bien joué !", DialogLayout.Bottom)
+        game.showLongText("Tu as réussis l'impossible en terminant ce jeu en mode extrême !", DialogLayout.Bottom)
+        game.showLongText("BRAVO !", DialogLayout.Bottom)
+        game.setGameOverMessage(true, "Victoire !")
+        pause(300)
+        scene.setBackgroundColor(2)
+        pause(300)
+        scene.setBackgroundColor(3)
+        pause(300)
+        scene.setBackgroundColor(4)
+        pause(300)
+        scene.setBackgroundColor(5)
+        pause(300)
+        scene.setBackgroundColor(6)
+        pause(300)
+        scene.setBackgroundColor(7)
+        pause(300)
+        scene.setBackgroundColor(8)
+        pause(300)
+        scene.setBackgroundColor(9)
+        pause(300)
+        scene.setBackgroundColor(10)
+        pause(300)
+        scene.setBackgroundColor(11)
+        pause(300)
+        scene.setBackgroundColor(12)
+        pause(300)
+        scene.setBackgroundColor(13)
+        pause(300)
+        scene.setBackgroundColor(14)
+        pause(300)
+        scene.setBackgroundColor(1)
+        pause(1000)
+    }
     game.over(true)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.tir_ennemi, function (sprite, otherSprite) {
@@ -116,7 +151,6 @@ sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.big_boss, function (sprite, oth
     statusbars.getStatusBarAttachedTo(StatusBarKind.big_bosshealt, otherSprite).value += -18
 })
 info.onCountdownEnd(function () {
-    effects.blizzard.startScreenEffect()
     BOSS2 = sprites.create(assets.image`BOSS`, SpriteKind.BOSS)
     BOSS2.setPosition(80, 45)
     Vie_boss = statusbars.create(100, 5, StatusBarKind.BOSSHEALT)
@@ -217,8 +251,8 @@ let tir_big_boss2: Sprite = null
 let projectile_ennemi: Sprite = null
 let projectile_de_la_mort_ami: Sprite = null
 let tir_joueur: Sprite = null
-let challenge = 0
 let classique = 0
+let challenge = 0
 let BOSS2: Sprite = null
 let Vie_boss: StatusBarSprite = null
 let energie: StatusBarSprite = null
@@ -258,17 +292,6 @@ let Jauge_de_terreur = 5000
 let Jauge_de_big_boss = 0
 let jauge_de_tirreur_de_direction = 0
 let jauge_de_shuriken = 5000
-game.onUpdateInterval(2000, function () {
-    if (energie.value == 0) {
-        vie.value += -4
-    }
-    if (energie.value > 50) {
-        vie.value += 2 * (vie.max / 100)
-    }
-    if (energie.value == 100) {
-        vie.value += 2 * (vie.max / 100)
-    }
-})
 game.onUpdateInterval(1000, function () {
     for (let ennemi_b3 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
         if (Math.percentChance(50)) {
@@ -525,6 +548,21 @@ forever(function () {
     music.play(music.stringPlayable("E C E G C5 F A G ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
     music.play(music.stringPlayable("G A A B B C5 C5 C5 ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
     music.play(music.stringPlayable("- - - - - - - - ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+})
+forever(function () {
+    pause(2000)
+    if (energie.value == 0) {
+        vie.value += -4
+        energie.setColor(5, 2)
+        pause(50)
+        energie.setColor(5, 11)
+    }
+    if (energie.value > 50) {
+        vie.value += 2 * (vie.max / 100)
+    }
+    if (energie.value == 100) {
+        vie.value += 2 * (vie.max / 100)
+    }
 })
 game.onUpdateInterval(100, function () {
     Jauge_de_terreur += 100 * challenge
