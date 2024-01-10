@@ -1,5 +1,5 @@
 {
-    "name": "vaisseau",
+    "name": "SpaceShip",
     "description": "",
     "dependencies": {
         "device": "*",

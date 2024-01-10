@@ -8,6 +8,7 @@ namespace SpriteKind {
     export const tir_big_boss = SpriteKind.create()
     export const tirreur_de_direction = SpriteKind.create()
     export const BOSS = SpriteKind.create()
+    export const titre = SpriteKind.create()
 }
 namespace StatusBarKind {
     export const big_bosshealt = StatusBarKind.create()
@@ -158,18 +159,20 @@ info.onCountdownEnd(function () {
     Vie_boss.setColor(2, 11)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (energie.value != 0) {
-        music.knock.play()
-        tir_joueur = sprites.createProjectileFromSprite(img`
-            . . . 
-            . 2 . 
-            . 2 . 
-            . 2 . 
-            . 2 . 
-            . . . 
-            `, vaisseau, 0, -100)
-        tir_joueur.setKind(SpriteKind.tir_ami)
-        energie.value += -3
+    if (challenge != 0) {
+        if (energie.value != 0) {
+            music.knock.play()
+            tir_joueur = sprites.createProjectileFromSprite(img`
+                . . . 
+                . 2 . 
+                . 2 . 
+                . 2 . 
+                . 2 . 
+                . . . 
+                `, vaisseau, 0, -100)
+            tir_joueur.setKind(SpriteKind.tir_ami)
+            energie.value += -3
+        }
     }
 })
 statusbars.onZero(StatusBarKind.EnemyHealth, function (status) {
@@ -202,19 +205,21 @@ statusbars.onZero(StatusBarKind.Health, function (status) {
     game.over(false)
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (magie.value == 100) {
-        music.thump.play()
-        projectile_de_la_mort_ami = sprites.createProjectileFromSprite(img`
-            . . 4 4 . . 
-            . 4 2 2 4 . 
-            4 2 5 5 2 4 
-            4 2 5 5 2 4 
-            . 4 2 2 4 . 
-            . . 4 4 . . 
-            `, vaisseau, 0, -200)
-        projectile_de_la_mort_ami.startEffect(effects.fire)
-        projectile_de_la_mort_ami.setKind(SpriteKind.projectil_de_la_mort)
-        magie.value += -100
+    if (challenge != 0) {
+        if (magie.value == 100) {
+            music.thump.play()
+            projectile_de_la_mort_ami = sprites.createProjectileFromSprite(img`
+                . . 4 4 . . 
+                . 4 2 2 4 . 
+                4 2 5 5 2 4 
+                4 2 5 5 2 4 
+                . 4 2 2 4 . 
+                . . 4 4 . . 
+                `, vaisseau, 0, -200)
+            projectile_de_la_mort_ami.startEffect(effects.fire)
+            projectile_de_la_mort_ami.setKind(SpriteKind.projectil_de_la_mort)
+            magie.value += -100
+        }
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.ennemi_vivant, function (sprite, otherSprite) {
@@ -259,6 +264,22 @@ let energie: StatusBarSprite = null
 let magie: StatusBarSprite = null
 let vie: StatusBarSprite = null
 let vaisseau: Sprite = null
+let mySprite = sprites.create(img`
+    .........................................
+    .........................................
+    .........................................
+    ...888.888.888.888.888...888.8.8.8.888...
+    ...8...8.8.8.8.8...8.....8...8.8.8.8.8...
+    ...888.888.888.8...88....888.888.8.888...
+    .....8.8...8.8.8...8.......8.8.8.8.8.....
+    ...888.8...8.8.888.888...888.8.8.8.8.....
+    .........................................
+    .........................................
+    .........................................
+    `, SpriteKind.titre)
+pause(2000)
+sprites.destroy(mySprite)
+pause(1000)
 effects.starField.startScreenEffect()
 vaisseau = sprites.create(img`
     . . . . . . . . . . . . . . . . 
