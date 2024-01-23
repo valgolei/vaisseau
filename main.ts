@@ -40,7 +40,7 @@ function touché () {
     scene.setBackgroundColor(0)
 }
 statusbars.onZero(StatusBarKind.BOSSHEALT, function (status) {
-    effects.blizzard.endScreenEffect()
+    game_over = 2
     sprites.destroy(Vie_boss)
     sprites.destroy(vie)
     sprites.destroy(energie)
@@ -55,7 +55,8 @@ statusbars.onZero(StatusBarKind.BOSSHEALT, function (status) {
     pause(2500)
     scene.setBackgroundColor(6)
     effects.confetti.startScreenEffect()
-    pause(3000)
+    music.play(music.stringPlayable("A A G G F F E E ", 400), music.PlaybackMode.UntilDone)
+    music.play(music.stringPlayable("D D C C B B C5 C5 ", 400), music.PlaybackMode.UntilDone)
     if (challenge == 1.3) {
         game.showLongText("Bien joué !", DialogLayout.Bottom)
         game.showLongText("Tu as réussis l'impossible en terminant ce jeu en mode extrême !", DialogLayout.Bottom)
@@ -152,6 +153,7 @@ sprites.onOverlap(SpriteKind.tir_ami, SpriteKind.big_boss, function (sprite, oth
     statusbars.getStatusBarAttachedTo(StatusBarKind.big_bosshealt, otherSprite).value += -18
 })
 info.onCountdownEnd(function () {
+    game_over = 1
     BOSS2 = sprites.create(assets.image`BOSS`, SpriteKind.BOSS)
     BOSS2.setPosition(80, 45)
     Vie_boss = statusbars.create(100, 5, StatusBarKind.BOSSHEALT)
@@ -178,7 +180,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 statusbars.onZero(StatusBarKind.EnemyHealth, function (status) {
     status.spriteAttachedTo().destroy()
     magie.value += 17
-    info.changeScoreBy(1)
+    info.changeScoreBy(10)
 })
 sprites.onOverlap(SpriteKind.projectil_de_la_mort, SpriteKind.BOSS, function (sprite, otherSprite) {
     music.bigCrash.play()
@@ -200,6 +202,7 @@ statusbars.onZero(StatusBarKind.Health, function (status) {
     vaisseau.startEffect(effects.fire)
     music.beamUp.play()
     sprites.destroy(vaisseau)
+    game_over = 2
     touché()
     pause(3000)
     game.over(false)
@@ -260,6 +263,7 @@ let classique = 0
 let challenge = 0
 let BOSS2: Sprite = null
 let Vie_boss: StatusBarSprite = null
+let game_over = 0
 let energie: StatusBarSprite = null
 let magie: StatusBarSprite = null
 let vie: StatusBarSprite = null
@@ -313,6 +317,7 @@ let Jauge_de_terreur = 5000
 let Jauge_de_big_boss = 0
 let jauge_de_tirreur_de_direction = 0
 let jauge_de_shuriken = 5000
+game_over = 0
 game.onUpdateInterval(1000, function () {
     for (let ennemi_b3 of sprites.allOfKind(SpriteKind.ennemi_vivant)) {
         if (Math.percentChance(50)) {
@@ -344,6 +349,168 @@ game.onUpdateInterval(1000, function () {
             if (Math.percentChance(50)) {
                 tir_big_boss2.x += -2
             }
+        }
+    }
+})
+forever(function () {
+    while (game_over < 1) {
+        music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("C F A F C5 F A F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("D C E C D G G G ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("C F A F C5 F A F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("D F E C D E C C ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("C5 B C5 A C5 G C5 F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("C5 E C5 D C5 C C5 C ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("G G G G G G G G ", (200 + info.score()) * challenge * 2), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("G G G G G G G G ", (200 + info.score()) * challenge * 2), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("C D E F G A B C5 ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("E F G E A G F D ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("G F E D C E D A ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("F B A G F G E A ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("E F A G D D E F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("A G F E G F E D ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("F E D C E D C D ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("C5 B A G F E D C ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("B C5 A B G A F G ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("E F D E C D G C ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("C5 A F D F A C5 G ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("E C E G C5 F A G ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("G A A B B C5 C5 C5 ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+        music.play(music.stringPlayable("- - - - - - - - ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
+        if (game_over > 0) {
+            break;
+        }
+    }
+    while (game_over < 2) {
+        music.play(music.stringPlayable("A E A E A A E A ", 400), music.PlaybackMode.UntilDone)
+        if (game_over > 1) {
+            break;
+        }
+        music.play(music.stringPlayable("E A C5 G B A E A ", 400), music.PlaybackMode.UntilDone)
+        if (game_over > 1) {
+            break;
+        }
+        music.play(music.stringPlayable("C5 B G D B A E B ", 400), music.PlaybackMode.UntilDone)
+        if (game_over > 1) {
+            break;
+        }
+        music.play(music.stringPlayable("G A E B C5 F B E ", 400), music.PlaybackMode.UntilDone)
+        if (game_over > 1) {
+            break;
+        }
+        music.play(music.stringPlayable("B G A E A E E A ", 400), music.PlaybackMode.UntilDone)
+        if (game_over > 1) {
+            break;
+        }
+        music.play(music.stringPlayable("A E E F C F A G ", 400), music.PlaybackMode.UntilDone)
+        if (game_over > 1) {
+            break;
+        }
+        music.play(music.stringPlayable("D G B A C5 E A C5 ", 400), music.PlaybackMode.UntilDone)
+        if (game_over > 1) {
+            break;
+        }
+        music.play(music.stringPlayable("F A C5 F B A G B ", 400), music.PlaybackMode.UntilDone)
+        if (game_over > 1) {
+            break;
+        }
+        music.play(music.stringPlayable("D G B G D G G E ", 400), music.PlaybackMode.UntilDone)
+        if (game_over > 1) {
+            break;
+        }
+        music.play(music.stringPlayable("A E A C5 A E C E ", 400), music.PlaybackMode.UntilDone)
+        if (game_over > 1) {
+            break;
+        }
+        music.play(music.stringPlayable("A B C5 F A F C A ", 400), music.PlaybackMode.UntilDone)
+        if (game_over > 1) {
+            break;
+        }
+        music.play(music.stringPlayable("B C5 E A E C F B ", 400), music.PlaybackMode.UntilDone)
+        if (game_over > 1) {
+            break;
+        }
+        music.play(music.stringPlayable("C5 G C5 G B G A E ", 400), music.PlaybackMode.UntilDone)
+        if (game_over > 1) {
+            break;
         }
     }
 })
@@ -429,6 +596,7 @@ forever(function () {
             ennemi_d.setKind(SpriteKind.tirreur_de_direction)
         }
         if (info.score() > 59 && info.score() < 63) {
+            game_over = 2
             info.setScore(100)
             for (let ennemi_a2 of sprites.allOfKind(SpriteKind.Enemy)) {
                 ennemi_a2.destroy()
@@ -541,34 +709,6 @@ forever(function () {
             touché()
         }
     }
-})
-forever(function () {
-    music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("C F A F C5 F A F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("D C E C D G G G ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("C F A F C5 F A F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("C E G E C5 E G E ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("D F E C D E C C ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("C5 B C5 A C5 G C5 F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("C5 E C5 D C5 C C5 C ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("G G G G G G G G ", (200 + info.score()) * challenge * 2), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("G G G G G G G G ", (200 + info.score()) * challenge * 2), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("C D E F G A B C5 ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("E F G E A G F D ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("G F E D C E D A ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("F B A G F G E A ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("E F A G D D E F ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("A G F E G F E D ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("F E D C E D C D ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("C5 B A G F E D C ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("B C5 A B G A F G ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("E F D E C D G C ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("C5 A F D F A C5 G ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("E C E G C5 F A G ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("G A A B B C5 C5 C5 ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
-    music.play(music.stringPlayable("- - - - - - - - ", (200 + info.score()) * challenge), music.PlaybackMode.UntilDone)
 })
 forever(function () {
     pause(2000)
