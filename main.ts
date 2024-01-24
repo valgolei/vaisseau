@@ -40,6 +40,7 @@ function touché () {
     scene.setBackgroundColor(0)
 }
 statusbars.onZero(StatusBarKind.BOSSHEALT, function (status) {
+    music.stopAllSounds()
     game_over = 2
     sprites.destroy(Vie_boss)
     sprites.destroy(vie)
@@ -200,6 +201,7 @@ statusbars.onZero(StatusBarKind.Health, function (status) {
     sprites.destroy(energie)
     sprites.destroy(magie)
     vaisseau.startEffect(effects.fire)
+    music.stopAllSounds()
     music.beamUp.play()
     sprites.destroy(vaisseau)
     game_over = 2
@@ -357,7 +359,12 @@ forever(function () {
 })
 forever(function () {
     while (game_over < 1) {
+        music.setTempo(200 * challenge)
         music.play(music.createSong(assets.song`1`), music.PlaybackMode.UntilDone)
+    }
+    while (game_over < 2) {
+        music.setTempo(100 * challenge)
+        music.play(music.createSong(assets.song`boss`), music.PlaybackMode.UntilDone)
     }
 })
 forever(function () {
@@ -444,6 +451,7 @@ forever(function () {
         if (info.score() > 59 && info.score() < 63) {
             game_over = 2
             info.setScore(100)
+            music.stopAllSounds()
             for (let ennemi_a2 of sprites.allOfKind(SpriteKind.Enemy)) {
                 ennemi_a2.destroy()
             }
