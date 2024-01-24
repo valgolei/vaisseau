@@ -181,7 +181,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 statusbars.onZero(StatusBarKind.EnemyHealth, function (status) {
     status.spriteAttachedTo().destroy()
     magie.value += 17
-    info.changeScoreBy(10)
+    info.changeScoreBy(60)
 })
 sprites.onOverlap(SpriteKind.projectil_de_la_mort, SpriteKind.BOSS, function (sprite, otherSprite) {
     music.bigCrash.play()
