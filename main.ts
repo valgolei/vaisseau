@@ -42,6 +42,7 @@ function touché () {
 statusbars.onZero(StatusBarKind.BOSSHEALT, function (status) {
     music.stopAllSounds()
     game_over = 2
+    music.play(music.createSong(hex`0078000408010400001c00010a006400f4016400000400000000000000000000000000050000040f00000020000a050a0d1116191d22252905001c000f0a006400f4010a0000040000000000000000000000000000000002060000002000012206001c00010a006400f401640000040000000000000000000000000000000002060000002000012207001c00020a006400f4016400000400000000000000000000000000000000030600000020000122`), music.PlaybackMode.InBackground)
     sprites.destroy(Vie_boss)
     sprites.destroy(vie)
     sprites.destroy(energie)
@@ -353,9 +354,6 @@ game.onUpdateInterval(1000, function () {
             }
         }
     }
-})
-forever(function () {
-    music.setTempo((200 + info.score()) * challenge)
 })
 forever(function () {
     while (game_over < 1) {
