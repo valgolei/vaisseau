@@ -358,7 +358,7 @@ game.onUpdateInterval(1000, function () {
 forever(function () {
     while (game_over < 1) {
         music.setTempo(200 * challenge)
-        music.play(music.createSong(assets.song`1`), music.PlaybackMode.UntilDone)
+        music.play(music.createSong(assets.song`combat`), music.PlaybackMode.UntilDone)
     }
     while (game_over < 2) {
         music.setTempo(100 * challenge)
