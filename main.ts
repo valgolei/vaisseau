@@ -306,6 +306,7 @@ vaisseau = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     `, SpriteKind.Player)
+vaisseau.setPosition(80, 90)
 controller.moveSprite(vaisseau, 85, 85)
 vaisseau.setStayInScreen(true)
 mode("classique")
