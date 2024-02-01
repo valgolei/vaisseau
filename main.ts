@@ -309,8 +309,24 @@ vaisseau = sprites.create(img`
 vaisseau.setPosition(80, 90)
 controller.moveSprite(vaisseau, 85, 85)
 vaisseau.setStayInScreen(true)
-mode("classique")
-Difficilté("normal")
+if (controller.down.isPressed()) {
+    mode("infini")
+} else {
+    mode("classique")
+}
+if (controller.B.isPressed() || controller.A.isPressed()) {
+    if (controller.B.isPressed() && controller.A.isPressed()) {
+        Difficilté("extrême")
+    } else {
+        if (controller.A.isPressed()) {
+            Difficilté("difficile")
+        } else {
+            Difficilté("facile")
+        }
+    }
+} else {
+    Difficilté("normal")
+}
 vie.attachToSprite(vaisseau, -17, 0)
 magie = statusbars.create(25, 4, StatusBarKind.Magic)
 magie.setPosition(16, 6)
