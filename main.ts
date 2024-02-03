@@ -373,14 +373,6 @@ game.onUpdateInterval(1000, function () {
     }
 })
 forever(function () {
-    while (game_over < 1) {
-        music.play(music.createSong(assets.song`combat`), music.PlaybackMode.UntilDone)
-    }
-    while (game_over < 2) {
-        music.play(music.createSong(assets.song`boss`), music.PlaybackMode.UntilDone)
-    }
-})
-forever(function () {
     if (classique == 1) {
         if (Jauge_de_terreur > 7000 - info.score() * 40 && info.score() < 60) {
             Jauge_de_terreur = 0
@@ -575,6 +567,14 @@ forever(function () {
             vie.value += -30
             touché()
         }
+    }
+})
+forever(function () {
+    while (game_over < 1) {
+        music.play(music.createSong(assets.song`combat`), music.PlaybackMode.UntilDone)
+    }
+    while (game_over < 2) {
+        music.play(music.createSong(assets.song`boss`), music.PlaybackMode.UntilDone)
     }
 })
 forever(function () {
