@@ -105,12 +105,12 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.tir_ennemi, function (sprite, ot
 function Difficilté (difficulté: string) {
     if (classique == 1) {
         if (difficulté == "facile") {
-            vie = statusbars.create(12, 4, StatusBarKind.Health)
+            vie = statusbars.create(14, 4, StatusBarKind.Health)
             vie.max = 150
             vie.value = 150
             challenge = 0.8
         } else if (difficulté == "difficile") {
-            vie = statusbars.create(12, 2, StatusBarKind.Health)
+            vie = statusbars.create(10, 2, StatusBarKind.Health)
             vie.max = 50
             vie.value = 50
             challenge = 1.2
@@ -286,26 +286,12 @@ let mySprite = sprites.create(img`
     `, SpriteKind.titre)
 music.play(music.stringPlayable("G E C E G C5 G C5 ", 400), music.PlaybackMode.UntilDone)
 sprites.destroy(mySprite)
+if (!(controller.anyButton.isPressed())) {
+    game.showLongText("pour choisir la difficulté : enfoncez entrée pour vous mettre en mode facile, ne touchez à rien pour vous mettre en mode normale, appuyez sur espace pour vous mettre en mode difficile et appuyez sur entrée et espace pour vous mettre en mode extrême", DialogLayout.Full)
+}
 pause(600)
 effects.starField.startScreenEffect()
-vaisseau = sprites.create(img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . 2 . . . . 2 . . . . . 
-    . . . . 2 5 2 . . 2 5 2 . . . . 
-    . . . . . 7 . . . . 7 . . . . . 
-    . . . . . 7 . . . . 7 . . . . . 
-    . . . . . 7 . . . . 7 . . . . . 
-    . . . . f 9 9 f f 9 9 f . . . . 
-    . . . . f 9 9 f f 9 9 f . . . . 
-    . . . . f 9 9 f f 9 9 f . . . . 
-    . . . . f f f f f f f f . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    `, SpriteKind.Player)
+vaisseau = sprites.create(assets.image`vaisseau`, SpriteKind.Player)
 vaisseau.setPosition(80, 90)
 controller.moveSprite(vaisseau, 85, 85)
 vaisseau.setStayInScreen(true)
@@ -317,11 +303,80 @@ if (controller.down.isPressed()) {
 if (controller.B.isPressed() || controller.A.isPressed()) {
     if (controller.B.isPressed() && controller.A.isPressed()) {
         Difficilté("extrême")
+        animation.runImageAnimation(
+        vaisseau,
+        [img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . 2 . . . . 2 . . . . . 
+            . . . . 2 9 2 . . 2 9 2 . . . . 
+            . . . . . c . . . . c . . . . . 
+            . . . . . c . . . . c . . . . . 
+            . . . . . c . . . . c . . . . . 
+            . . . . f 2 2 f f 2 2 f . . . . 
+            . . . . f 2 2 f f 2 2 f . . . . 
+            . . . . f 2 2 f f 2 2 f . . . . 
+            . . . . f f f f f f f f . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `],
+        500,
+        false
+        )
     } else {
         if (controller.A.isPressed()) {
             Difficilté("difficile")
+            animation.runImageAnimation(
+            vaisseau,
+            [img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . 1 . . . . 1 . . . . . 
+                . . . . 1 f 1 . . 1 f 1 . . . . 
+                . . . . . 8 . . . . 8 . . . . . 
+                . . . . . 8 . . . . 8 . . . . . 
+                . . . . . 8 . . . . 8 . . . . . 
+                . . . . f 1 1 f f 1 1 f . . . . 
+                . . . . f 1 1 f f 1 1 f . . . . 
+                . . . . f 1 1 f f 1 1 f . . . . 
+                . . . . f f f f f f f f . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `],
+            500,
+            false
+            )
         } else {
             Difficilté("facile")
+            animation.runImageAnimation(
+            vaisseau,
+            [img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . 8 . . . . 8 . . . . . 
+                . . . . 8 2 8 . . 8 2 8 . . . . 
+                . . . . . 9 . . . . 9 . . . . . 
+                . . . . . 9 . . . . 9 . . . . . 
+                . . . . . 9 . . . . 9 . . . . . 
+                . . . . f a a f f a a f . . . . 
+                . . . . f a a f f a a f . . . . 
+                . . . . f a a f f a a f . . . . 
+                . . . . f f f f f f f f . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `],
+            500,
+            false
+            )
         }
     }
 } else {
