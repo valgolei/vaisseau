@@ -287,21 +287,73 @@ let mySprite = sprites.create(img`
 music.play(music.stringPlayable("G E C E G C5 G C5 ", 400), music.PlaybackMode.UntilDone)
 sprites.destroy(mySprite)
 if (!(controller.anyButton.isPressed())) {
-    game.showLongText("pour choisir la difficulté : enfoncez entrée pour vous mettre en mode facile, ne touchez à rien pour vous mettre en mode normale, appuyez sur espace pour vous mettre en mode difficile et appuyez sur entrée et espace pour vous mettre en mode extrême", DialogLayout.Full)
+    game.showLongText("pour choisir la difficulté : flèche gauche = mode facile, flèche bas = mode normal, flèche droite = mode difficile, flèche haut = mode extrême, espace = mode infini(normal)", DialogLayout.Full)
 }
-pause(600)
+pause(400)
+pauseUntil(() => controller.anyButton.isPressed())
 effects.starField.startScreenEffect()
 vaisseau = sprites.create(assets.image`vaisseau`, SpriteKind.Player)
 vaisseau.setPosition(80, 90)
 controller.moveSprite(vaisseau, 85, 85)
 vaisseau.setStayInScreen(true)
-if (controller.down.isPressed()) {
-    mode("infini")
-} else {
+if (controller.down.isPressed() || (controller.up.isPressed() || (controller.right.isPressed() || controller.left.isPressed()))) {
     mode("classique")
-}
-if (controller.B.isPressed() || controller.A.isPressed()) {
-    if (controller.B.isPressed() && controller.A.isPressed()) {
+    if (controller.down.isPressed()) {
+        Difficilté("normal")
+    }
+    if (controller.left.isPressed()) {
+        Difficilté("facile")
+        animation.runImageAnimation(
+        vaisseau,
+        [img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . 8 . . . . 8 . . . . . 
+            . . . . 8 2 8 . . 8 2 8 . . . . 
+            . . . . . 9 . . . . 9 . . . . . 
+            . . . . . 9 . . . . 9 . . . . . 
+            . . . . . 9 . . . . 9 . . . . . 
+            . . . . f a a f f a a f . . . . 
+            . . . . f a a f f a a f . . . . 
+            . . . . f a a f f a a f . . . . 
+            . . . . f f f f f f f f . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `],
+        500,
+        false
+        )
+    }
+    if (controller.right.isPressed()) {
+        Difficilté("difficile")
+        animation.runImageAnimation(
+        vaisseau,
+        [img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . 1 . . . . 1 . . . . . 
+            . . . . 1 f 1 . . 1 f 1 . . . . 
+            . . . . . 8 . . . . 8 . . . . . 
+            . . . . . 8 . . . . 8 . . . . . 
+            . . . . . 8 . . . . 8 . . . . . 
+            . . . . f 1 1 f f 1 1 f . . . . 
+            . . . . f 1 1 f f 1 1 f . . . . 
+            . . . . f 1 1 f f 1 1 f . . . . 
+            . . . . f f f f f f f f . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `],
+        500,
+        false
+        )
+    }
+    if (controller.up.isPressed()) {
         Difficilté("extrême")
         animation.runImageAnimation(
         vaisseau,
@@ -326,61 +378,33 @@ if (controller.B.isPressed() || controller.A.isPressed()) {
         500,
         false
         )
-    } else {
-        if (controller.A.isPressed()) {
-            Difficilté("difficile")
-            animation.runImageAnimation(
-            vaisseau,
-            [img`
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . 1 . . . . 1 . . . . . 
-                . . . . 1 f 1 . . 1 f 1 . . . . 
-                . . . . . 8 . . . . 8 . . . . . 
-                . . . . . 8 . . . . 8 . . . . . 
-                . . . . . 8 . . . . 8 . . . . . 
-                . . . . f 1 1 f f 1 1 f . . . . 
-                . . . . f 1 1 f f 1 1 f . . . . 
-                . . . . f 1 1 f f 1 1 f . . . . 
-                . . . . f f f f f f f f . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                `],
-            500,
-            false
-            )
-        } else {
-            Difficilté("facile")
-            animation.runImageAnimation(
-            vaisseau,
-            [img`
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . 8 . . . . 8 . . . . . 
-                . . . . 8 2 8 . . 8 2 8 . . . . 
-                . . . . . 9 . . . . 9 . . . . . 
-                . . . . . 9 . . . . 9 . . . . . 
-                . . . . . 9 . . . . 9 . . . . . 
-                . . . . f a a f f a a f . . . . 
-                . . . . f a a f f a a f . . . . 
-                . . . . f a a f f a a f . . . . 
-                . . . . f f f f f f f f . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                `],
-            500,
-            false
-            )
-        }
     }
 } else {
-    Difficilté("normal")
+    mode("infini")
+    Difficilté("normale")
+    animation.runImageAnimation(
+    vaisseau,
+    [img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . 3 . . . . 3 . . . . . 
+        . . . . 3 9 3 . . 3 9 3 . . . . 
+        . . . . . c . . . . c . . . . . 
+        . . . . . c . . . . c . . . . . 
+        . . . . . c . . . . c . . . . . 
+        . . . . f 9 9 f f 9 9 f . . . . 
+        . . . . f 9 8 9 9 8 9 f . . . . 
+        . . . . f 9 9 f f 9 9 f . . . . 
+        . . . . f f f f f f f f . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `],
+    500,
+    false
+    )
 }
 vie.attachToSprite(vaisseau, -17, 0)
 magie = statusbars.create(25, 4, StatusBarKind.Magic)
