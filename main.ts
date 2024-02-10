@@ -119,6 +119,11 @@ function Difficilté (difficulté: string) {
             vie.max = 1
             vie.value = 1
             challenge = 1.3
+        } else if (difficulté == "extrêmeness") {
+            vie = statusbars.create(0, 0, StatusBarKind.Health)
+            vie.max = 1
+            vie.value = 1
+            challenge = 1.4
         } else {
             vie = statusbars.create(12, 3, StatusBarKind.Health)
             vie.max = 100
@@ -287,16 +292,24 @@ let mySprite = sprites.create(img`
 music.play(music.stringPlayable("G E C E G C5 G C5 ", 400), music.PlaybackMode.UntilDone)
 sprites.destroy(mySprite)
 if (!(controller.anyButton.isPressed())) {
-    game.showLongText("pour choisir la difficulté : flèche gauche = mode facile, flèche bas = mode normal, flèche droite = mode difficile, flèche haut = mode extrême, espace = mode infini(normal)", DialogLayout.Full)
+    game.showLongText("pour choisir la difficulté : flèche gauche = mode facile, flèche bas = mode normal, flèche droite = mode difficile, flèche haut = mode extrême, espace = mode infini(normal), entrée = mode Légendaire", DialogLayout.Full)
 }
-pause(400)
+pause(200)
+let mySprite2 = sprites.create(img`
+    22..222.222.222.222.222...2.2.2..2.222...222.222.2.2.222.2.2.222
+    2.2.2.2.2...2...2...2.....2.2.22.2.2......2..2.2.2.2.2...2.2.2..
+    22..22..22..222.222.22....2.2.2222.22.....2..2.2.2.2.2...222.22.
+    2...2.2.2.....2...2.2.....2.2.2.22.2......2..2.2.2.2.2...2.2.2..
+    2...2.2.222.222.222.222...222.2..2.222....2..222.222.222.2.2.222
+    `, SpriteKind.titre)
 pauseUntil(() => controller.anyButton.isPressed())
+sprites.destroy(mySprite2)
 effects.starField.startScreenEffect()
 vaisseau = sprites.create(assets.image`vaisseau`, SpriteKind.Player)
 vaisseau.setPosition(80, 90)
 controller.moveSprite(vaisseau, 85, 85)
 vaisseau.setStayInScreen(true)
-if (controller.down.isPressed() || (controller.up.isPressed() || (controller.right.isPressed() || controller.left.isPressed()))) {
+if (controller.down.isPressed() || (controller.up.isPressed() || (controller.right.isPressed() || (controller.left.isPressed() || controller.B.isPressed())))) {
     mode("classique")
     if (controller.down.isPressed()) {
         Difficilté("normal")
@@ -368,6 +381,32 @@ if (controller.down.isPressed() || (controller.up.isPressed() || (controller.rig
             . . . . f 2 2 f f 2 2 f . . . . 
             . . . . f 2 2 f f 2 2 f . . . . 
             . . . . f 2 2 f f 2 2 f . . . . 
+            . . . . f f f f f f f f . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `],
+        500,
+        false
+        )
+    }
+    if (controller.B.isPressed()) {
+        Difficilté("extrêmeness")
+        animation.runImageAnimation(
+        vaisseau,
+        [img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . f . . . . f . . . . . 
+            . . . . f f f . . f f f . . . . 
+            . . . . . f . . . . f . . . . . 
+            . . . . . f . . . . f . . . . . 
+            . . . . . f . . . . f . . . . . 
+            . . . . f f f f f f f f . . . . 
+            . . . . f f f f f f f f . . . . 
+            . . . . f f f f f f f f . . . . 
             . . . . f f f f f f f f . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
