@@ -275,6 +275,7 @@ let game_over = 0
 let energie: StatusBarSprite = null
 let magie: StatusBarSprite = null
 let vie: StatusBarSprite = null
+let mySprite3: Sprite = null
 let vaisseau: Sprite = null
 let mySprite = sprites.create(img`
     .........................................
@@ -352,6 +353,13 @@ if (controller.down.isPressed() || (controller.up.isPressed() || (controller.rig
     mode("classique")
     if (controller.down.isPressed()) {
         Difficilté("normal")
+        mySprite3 = sprites.create(img`
+            5 . . 5 
+            5 5 . 5 
+            5 5 5 5 
+            5 . 5 5 
+            5 . . 5 
+            `, SpriteKind.titre)
     }
     if (controller.left.isPressed()) {
         Difficilté("facile")
@@ -378,6 +386,13 @@ if (controller.down.isPressed() || (controller.up.isPressed() || (controller.rig
         500,
         false
         )
+        mySprite3 = sprites.create(img`
+            7 7 7 
+            7 . . 
+            7 7 . 
+            7 . . 
+            7 . . 
+            `, SpriteKind.titre)
     }
     if (controller.right.isPressed()) {
         Difficilté("difficile")
@@ -404,6 +419,13 @@ if (controller.down.isPressed() || (controller.up.isPressed() || (controller.rig
         500,
         false
         )
+        mySprite3 = sprites.create(img`
+            2 2 . 
+            2 . 2 
+            2 . 2 
+            2 . 2 
+            2 2 . 
+            `, SpriteKind.titre)
     }
     if (controller.up.isPressed()) {
         Difficilté("extrême")
@@ -430,6 +452,13 @@ if (controller.down.isPressed() || (controller.up.isPressed() || (controller.rig
         500,
         false
         )
+        mySprite3 = sprites.create(img`
+            8 8 8 
+            8 . . 
+            8 8 . 
+            8 . . 
+            8 8 8 
+            `, SpriteKind.titre)
     }
     if (controller.B.isPressed()) {
         Difficilté("extrêmeness")
@@ -456,6 +485,13 @@ if (controller.down.isPressed() || (controller.up.isPressed() || (controller.rig
         500,
         false
         )
+        mySprite3 = sprites.create(img`
+            a . . 
+            a . . 
+            a . . 
+            a . . 
+            a a a 
+            `, SpriteKind.titre)
     }
 } else {
     mode("infini")
@@ -483,12 +519,20 @@ if (controller.down.isPressed() || (controller.up.isPressed() || (controller.rig
     500,
     false
     )
+    mySprite3 = sprites.create(img`
+        9 9 9 
+        . 9 . 
+        . 9 . 
+        . 9 . 
+        9 9 9 
+        `, SpriteKind.titre)
 }
 vie.attachToSprite(vaisseau, -17, 0)
 magie = statusbars.create(25, 4, StatusBarKind.Magic)
 magie.setPosition(16, 6)
 energie = statusbars.create(20, 4, StatusBarKind.Energy)
 energie.setPosition(12, 115)
+mySprite3.setPosition(155, 115)
 info.setScore(0)
 let Jauge_de_terreur = 5000
 let Jauge_de_big_boss = 0
