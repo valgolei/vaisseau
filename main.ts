@@ -671,6 +671,8 @@ forever(function () {
                 ennemi_d2.destroy()
             }
             info.startCountdown(2)
+            music.play(music.createSoundEffect(WaveShape.Noise, 2165, 3403, 0, 212, 2000, SoundExpressionEffect.None, InterpolationCurve.Curve), music.PlaybackMode.InBackground)
+            scene.cameraShake(4, 2000)
         }
     } else {
         if (Jauge_de_terreur > 7000 - Math.sqrt(info.score()) * 400) {
